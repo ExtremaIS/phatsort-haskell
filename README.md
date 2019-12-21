@@ -1,5 +1,7 @@
 # PhatSort
 
+[![Build Status](https://travis-ci.com/ExtremaIS/phatsort-haskell.svg?branch=master)](https://travis-ci.com/ExtremaIS/phatsort-haskell)
+
 * [Overview](#overview)
 * [Requirements](#requirements)
 * [Installation](#installation)
