@@ -29,6 +29,7 @@ following conventions:
 ### Non-Breaking
 
 * Add Travis CI
+* Turn off threading
 
 ## 0.1.0.0 (2019-12-21)
 
