@@ -310,7 +310,7 @@ options = Options
     <*> targetArguments
 
 main :: IO ()
-main = phatsort =<< LibOA.execParser pinfo
+main = phatsort =<< OA.execParser pinfo
   where
     pinfo :: OA.ParserInfo Options
     pinfo
@@ -318,6 +318,7 @@ main = phatsort =<< LibOA.execParser pinfo
       $ mconcat
           [ OA.fullDesc
           , OA.progDesc "FAT filesystem sort utility"
+          , OA.failureCode 2
           , OA.footerDoc . Just $ LibOA.vspace
               [ typeHelp
               , orderHelp

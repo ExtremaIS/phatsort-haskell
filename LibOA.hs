@@ -10,20 +10,15 @@
 -- helper package, so I currently just copy the code to different projects as
 -- required.
 --
--- Revision: 2019-12-21
+-- Revision: 2019-12-22
 ------------------------------------------------------------------------------
 
 {-# LANGUAGE CPP #-}
 
 module LibOA
-  ( -- * Parsing
-    -- $Parsing
-    execParser
-  , customExecParser
-  , handleParseResult
-    -- * Options
+  ( -- * Options
     -- $Options
-  , helper
+    helper
   , versioner
     -- * Utilities
   , commands
@@ -43,55 +38,11 @@ import qualified Data.List as List
 #if !MIN_VERSION_base (4,11,0)
 import Data.Monoid ((<>))
 #endif
-import System.Environment (getArgs, getProgName)
-import System.Exit (ExitCode(ExitFailure, ExitSuccess), exitSuccess, exitWith)
-import System.IO (hPutStrLn, stderr)
 
 -- https://hackage.haskell.org/package/optparse-applicative
 import qualified Options.Applicative as OA
 import qualified Options.Applicative.Common as OAC
 import qualified Options.Applicative.Types as OAT
-
-------------------------------------------------------------------------------
--- $Parsing
---
--- These functions do the same thing as the standard functions of the same
--- name except that they exit with exit code 2 on error, conforming to Unix
--- conventions.
-
--- | Parse command-line arguments
---
--- Standard version: 'OA.execParser'
-execParser ::OA.ParserInfo a -> IO a
-execParser = customExecParser OA.defaultPrefs
-
--- | Parse command-line arguments with custom preferences
---
--- Standard version: 'OA.customExecParser'
-customExecParser :: OA.ParserPrefs -> OA.ParserInfo a -> IO a
-customExecParser pprefs pinfo
-    = OA.execParserPure pprefs pinfo <$> getArgs
-    >>= handleParseResult
-
--- | Handle a 'OA.ParserResult'
---
--- Standard version: 'OA.handleParseResult'
-handleParseResult :: OA.ParserResult a -> IO a
-handleParseResult (OA.Success x) = return x
-handleParseResult (OA.Failure failure) = do
-    progn <- getProgName
-    let (msg, exit) = OA.renderFailure failure progn
-    case exit of
-      ExitSuccess -> do
-        putStrLn msg
-        exitSuccess
-      _ -> do
-        hPutStrLn stderr msg
-        exitWith $ ExitFailure 2
-handleParseResult (OA.CompletionInvoked compl) = do
-    progn <- getProgName
-    putStr =<< OA.execCompletion compl progn
-    exitSuccess
 
 ------------------------------------------------------------------------------
 -- $Options
