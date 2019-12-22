@@ -2,3 +2,7 @@ resolver: lts-12.26
 
 packages:
 - .
+
+extra-deps:
+- git: https://github.com/ExtremaIS/optparse-applicative-supplement.git
+  commit: c578dd962638a5ab66172ee19080c760146dd389
