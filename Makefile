@@ -166,6 +166,7 @@ source-tar:
 
 test:
 > $(eval P := "")
+> @command -v hr >/dev/null 2>&1 && hr -t || true
 > @test -z "$(P)" \
 >   && stack test $(RESOLVER_ARGS) $(STACK_YAML_ARGS) \
 >   || stack test $(RESOLVER_ARGS) $(STACK_YAML_ARGS) \
