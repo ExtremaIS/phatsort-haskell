@@ -61,7 +61,7 @@ clean:
 .PHONY: clean
 
 clean-all: clean
-> @rm -rf .stack work
+> @rm -rf .stack-work
 > @rm -rf build
 > @rm -f *.yaml.lock
 .PHONY: clean-all
