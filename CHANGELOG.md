@@ -24,6 +24,13 @@ following conventions:
 
 [KaC]: <https://keepachangelog.com/en/1.0.0/>
 
+## 0.1.0.1 (2019-12-22)
+
+### Non-Breaking
+
+* Add Travis CI
+* Turn off threading
+
 ## 0.1.0.0 (2019-12-21)
 
 ### Breaking

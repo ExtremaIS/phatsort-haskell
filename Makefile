@@ -87,6 +87,7 @@ help:
 > @echo "make repl        enter a REPL *"
 > @echo "make source-git  create source tarball of git TREE"
 > @echo "make source-tar  create source tarball using tar"
+> @echo "make test        run tests, optionally for pattern P *"
 > @echo "make todo        search for TODO items"
 > @echo "make version     show current version"
 > @echo
@@ -162,6 +163,14 @@ source-tar:
 >   .
 > @rm -f build/.gitignore
 .PHONY: source-tar
+
+test:
+> $(eval P := "")
+> @test -z "$(P)" \
+>   && stack test $(RESOLVER_ARGS) $(STACK_YAML_ARGS) \
+>   || stack test $(RESOLVER_ARGS) $(STACK_YAML_ARGS) \
+>       --test-arguments '--pattern $(P)'
+.PHONY: test
 
 todo:
 > @find . -type f \
