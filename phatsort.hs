@@ -35,6 +35,9 @@ import System.FilePath ((</>), splitDirectories)
 -- https://hackage.haskell.org/package/optparse-applicative
 import qualified Options.Applicative as OA
 
+-- https://github.com/ExtremaIS/optparse-applicative-supplement
+import qualified Options.Applicative.Supplement as OAS
+
 -- https://hackage.haskell.org/package/random-shuffle
 import System.Random.Shuffle (shuffleM)
 
@@ -44,9 +47,6 @@ import Control.Monad.Trans.Except (runExceptT, throwE)
 
 -- (phatsort:cabal)
 import qualified Paths_phatsort as Project
-
--- (phatsort:executable)
-import qualified LibOA
 
 ------------------------------------------------------------------------------
 
@@ -314,12 +314,12 @@ main = phatsort =<< OA.execParser pinfo
   where
     pinfo :: OA.ParserInfo Options
     pinfo
-      = OA.info (LibOA.helper <*> LibOA.versioner version <*> options)
+      = OA.info (OAS.helper <*> OAS.versioner version <*> options)
       $ mconcat
           [ OA.fullDesc
           , OA.progDesc "FAT filesystem sort utility"
           , OA.failureCode 2
-          , OA.footerDoc . Just $ LibOA.vspace
+          , OA.footerDoc . Just $ OAS.vspace
               [ typeHelp
               , orderHelp
               , exitCodeHelp
@@ -330,20 +330,20 @@ main = phatsort =<< OA.execParser pinfo
     version = "phatsort-haskell " ++ showVersion Project.version
 
     typeHelp :: Doc
-    typeHelp = LibOA.section "TYPE choices:" $ LibOA.table
+    typeHelp = OAS.section "TYPE choices:" $ OAS.table
       [ ("dirs", "sort directories before files")
       , ("files", "sort files before directories")
       ]
 
     orderHelp :: Doc
-    orderHelp = LibOA.section "ORDER choices:" $ LibOA.table
+    orderHelp = OAS.section "ORDER choices:" $ OAS.table
       [ ("name", "sort by filename")
       , ("time", "sort by modification time")
       , ("random", "random order")
       ]
 
     exitCodeHelp :: Doc
-    exitCodeHelp = LibOA.section "Exit codes:" $ LibOA.table
+    exitCodeHelp = OAS.section "Exit codes:" $ OAS.table
       [ ("0", "no error")
       , ("1", "execution error")
       , ("2", "command line error")

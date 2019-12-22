@@ -26,6 +26,10 @@ following conventions:
 
 ## Unreleased
 
+### Non-Breaking
+
+* Use `optparse-applicative-supplement`
+
 ## 0.1.0.1 (2019-12-22)
 
 ### Non-Breaking
