@@ -26,6 +26,10 @@ following conventions:
 
 ## Unreleased
 
+### Non-Breaking
+
+* Switch back to using `LibOA` instead of `optparse-applicative-supplement`
+
 ## 0.1.0.2 (2019-12-22)
 
 ### Non-Breaking
