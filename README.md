@@ -10,6 +10,7 @@
 * [Related Software](#related-software)
 * [Project](#project)
     * [Links](#links)
+    * [Releases](#releases)
     * [Contribution](#contribution)
     * [License](#license)
 
