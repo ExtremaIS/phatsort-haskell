@@ -44,7 +44,7 @@ shell to execute.
 
 ### Installation From Source
 
-PhatSort can be build from source using [Stack](https://www.haskellstack.org).
+PhatSort can be built from source using [Stack](https://www.haskellstack.org).
 For example, you can install the latest release (to `~/.local/bin` on Linux)
 as follows:
 
