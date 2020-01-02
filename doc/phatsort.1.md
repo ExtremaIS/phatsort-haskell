@@ -80,7 +80,7 @@ Reporting issues:
     Email: <bugs@extrema.is>
 
 Copyright
-:   Copyright (c) 2019 Travis Cardwell
+:   Copyright (c) 2019-2020 Travis Cardwell
 
 License
 :   The MIT License <https://opensource.org/licenses/MIT>
