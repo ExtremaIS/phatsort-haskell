@@ -77,7 +77,8 @@ FAT tables.  I have not tried it.
 
 ## Project
 
-There are no plans to put this package on Hackage.
+PhatSort was written quickly to solve a particular pain point.  There are no
+plans to expose a library or put the package on Hackage.
 
 ### Links
 
