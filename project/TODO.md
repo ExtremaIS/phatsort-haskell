@@ -2,6 +2,8 @@
 
 ## Functionality
 
+* Add delay
+* Add `sync`
 * Refactor to testable library and separate executable
 * Human error messages
 
