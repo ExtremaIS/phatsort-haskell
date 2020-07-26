@@ -1,5 +1,5 @@
 name:           phatsort
-version:        0.1.0.3
+version:        0.2.0.0
 category:       Utils
 synopsis:       FAT filesystem sort utility
 description:
@@ -11,7 +11,7 @@ homepage:       https://github.com/ExtremaIS/phatsort-haskell#readme
 bug-reports:    https://github.com/ExtremaIS/phatsort-haskell/issues
 author:         Travis Cardwell <travis.cardwell@extrema.is>
 maintainer:     Travis Cardwell <travis.cardwell@extrema.is>
-copyright:      Copyright (c) 2019 Travis Cardwell
+copyright:      Copyright (c) 2019-2020 Travis Cardwell
 license:        MIT
 license-file:   LICENSE
 
@@ -21,7 +21,7 @@ tested-with:
   GHC ==8.2.2
    || ==8.4.4
    || ==8.6.5
-   || ==8.8.1
+   || ==8.8.3
 
 extra-source-files:
   CHANGELOG.md
@@ -42,6 +42,7 @@ executable phatsort
     , directory >=1.3 && <1.4
     , filepath >=1.4 && <1.5
     , optparse-applicative >=0.14 && <0.16
+    , process >=1.6.1 && <1.7
     , random-shuffle >=0.0.4 && <0.1
     , transformers >=0.5 && <0.6
   default-language: Haskell2010

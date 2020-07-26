@@ -10,6 +10,7 @@
 * [Related Software](#related-software)
 * [Project](#project)
     * [Links](#links)
+    * [Releases](#releases)
     * [Contribution](#contribution)
     * [License](#license)
 
@@ -44,7 +45,7 @@ shell to execute.
 
 ### Installation From Source
 
-PhatSort can be build from source using [Stack](https://www.haskellstack.org).
+PhatSort can be built from source using [Stack](https://www.haskellstack.org).
 For example, you can install the latest release (to `~/.local/bin` on Linux)
 as follows:
 
@@ -76,7 +77,8 @@ FAT tables.  I have not tried it.
 
 ## Project
 
-There are no plans to put this package on Hackage.
+PhatSort was written quickly to solve a particular pain point.  There are no
+plans to expose a library or put the package on Hackage.
 
 ### Links
 

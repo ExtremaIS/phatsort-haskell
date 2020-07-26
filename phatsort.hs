@@ -2,7 +2,7 @@
 -- |
 -- Module      : Main
 -- Description : PhatSort: a FAT filesystem sort utility
--- Copyright   : Copyright (c) 2019 Travis Cardwell
+-- Copyright   : Copyright (c) 2019-2020 Travis Cardwell
 -- License     : MIT
 --
 -- See the README for details.
@@ -35,6 +35,9 @@ import System.FilePath ((</>), splitDirectories)
 -- https://hackage.haskell.org/package/optparse-applicative
 import qualified Options.Applicative as OA
 
+-- https://hackage.haskell.org/package/process
+import qualified System.Process as Proc
+
 -- https://hackage.haskell.org/package/random-shuffle
 import System.Random.Shuffle (shuffleM)
 
@@ -49,6 +52,7 @@ import qualified Paths_phatsort as Project
 import qualified LibOA
 
 ------------------------------------------------------------------------------
+-- $Types
 
 -- | Case sensitivity
 data SortCase
@@ -75,6 +79,7 @@ data Options
   = Options
     { optCase    :: !SortCase
     , optFirst   :: !SortFirst
+    , optSync    :: !Bool
     , optOrder   :: !SortOrder
     , optReverse :: !Bool
     , optScript  :: !Bool
@@ -93,6 +98,7 @@ data Target
   deriving Show
 
 ------------------------------------------------------------------------------
+-- $Implementation
 
 -- | Utility implementation
 phatsort :: Options -> IO ()
@@ -158,25 +164,33 @@ phatsort Options{..} = do
       CaseSensitive -> compare name1 name2
       CaseInsensitive -> compare (map toLower name1) (map toLower name2)
 
+    scriptSync :: IO ()
+    scriptSync
+      | optSync   = putCmd ["sync"]
+      | otherwise = return ()
+
+    sync :: IO ()
+    sync = Proc.callProcess "sync" []
+
     mvDir :: FilePath -> FilePath -> IO ()
     mvDir srcPath dstPath
-      | optScript = putCmd ["mv", srcPath, dstPath]
-      | otherwise = Dir.renameDirectory srcPath dstPath
+      | optScript = putCmd ["mv", srcPath, dstPath] >> scriptSync
+      | otherwise = Dir.renameDirectory srcPath dstPath >> sync
 
     mkDir :: FilePath -> IO ()
     mkDir path
-      | optScript = putCmd ["mkdir", path]
-      | otherwise = Dir.createDirectory path
+      | optScript = putCmd ["mkdir", path] >> scriptSync
+      | otherwise = Dir.createDirectory path >> sync
 
     rmDir :: FilePath -> IO ()
     rmDir path
-      | optScript = putCmd ["rmdir", path]
-      | otherwise = Dir.removeDirectory path
+      | optScript = putCmd ["rmdir", path] >> scriptSync
+      | otherwise = Dir.removeDirectory path >> sync
 
     mvFile :: FilePath -> FilePath -> IO ()
     mvFile srcPath dstPath
-      | optScript = putCmd ["mv", srcPath, dstPath]
-      | otherwise = Dir.renameFile srcPath dstPath
+      | optScript = putCmd ["mv", srcPath, dstPath] >> scriptSync
+      | otherwise = Dir.renameFile srcPath dstPath >> sync
 
     putProgress :: FilePath -> IO ()
     putProgress path
@@ -235,97 +249,23 @@ putCmd = putStrLn . unwords . map escape
             ]
 
 ------------------------------------------------------------------------------
+-- $CLI
 
-caseOption :: OA.Parser SortCase
-caseOption = fmap (bool CaseSensitive CaseInsensitive) . OA.switch $ mconcat
-    [ OA.long "case"
-    , OA.short 'c'
-    , OA.help "case-insensitive sort"
-    ]
-
-firstOption :: OA.Parser SortFirst
-firstOption = OA.option (OA.eitherReader parse) $ mconcat
-    [ OA.long "first"
-    , OA.short 'f'
-    , OA.metavar "TYPE"
-    , OA.value FirstNone
-    , OA.help "sort certain directory entries first"
-    ]
+-- | Parse program options
+parseOptions :: IO Options
+parseOptions = OA.execParser
+    . OA.info (LibOA.helper <*> LibOA.versioner version <*> options)
+    $ mconcat
+        [ OA.fullDesc
+        , OA.progDesc "FAT filesystem sort utility"
+        , OA.failureCode 2
+        , OA.footerDoc . Just $ LibOA.vspace
+            [ typeHelp
+            , orderHelp
+            , exitCodeHelp
+            ]
+        ]
   where
-    parse :: String -> Either String SortFirst
-    parse "dirs" = Right FirstDirs
-    parse "files" = Right FirstFiles
-    parse _ = Left "unknown first option; \"dirs\" or \"files\" expected"
-
-orderOption :: OA.Parser SortOrder
-orderOption = OA.option (OA.eitherReader parse) $ mconcat
-    [ OA.long "order"
-    , OA.short 'o'
-    , OA.metavar "ORDER"
-    , OA.value OrderName
-    , OA.help "desired order (default: name)"
-    ]
-  where
-    parse :: String -> Either String SortOrder
-    parse "name" = Right OrderName
-    parse "time" = Right OrderTime
-    parse "random" = Right OrderRandom
-    parse _ = Left "unknown ORDER"
-
-reverseOption :: OA.Parser Bool
-reverseOption = OA.switch $ mconcat
-    [ OA.long "reverse"
-    , OA.short 'r'
-    , OA.help "reverse sort"
-    ]
-
-scriptOption :: OA.Parser Bool
-scriptOption = OA.switch $ mconcat
-    [ OA.long "script"
-    , OA.short 's'
-    , OA.help "output script instead of executing"
-    ]
-
-verboseOption :: OA.Parser Bool
-verboseOption = OA.switch $ mconcat
-    [ OA.long "verbose"
-    , OA.short 'v'
-    , OA.help "display progress"
-    ]
-
-targetArguments :: OA.Parser [FilePath]
-targetArguments = some . OA.strArgument $ mconcat
-    [ OA.metavar "TARGET ..."
-    , OA.help "target directories"
-    ]
-
-options :: OA.Parser Options
-options = Options
-    <$> caseOption
-    <*> firstOption
-    <*> orderOption
-    <*> reverseOption
-    <*> scriptOption
-    <*> verboseOption
-    <*> targetArguments
-
-main :: IO ()
-main = phatsort =<< OA.execParser pinfo
-  where
-    pinfo :: OA.ParserInfo Options
-    pinfo
-      = OA.info (LibOA.helper <*> LibOA.versioner version <*> options)
-      $ mconcat
-          [ OA.fullDesc
-          , OA.progDesc "FAT filesystem sort utility"
-          , OA.failureCode 2
-          , OA.footerDoc . Just $ LibOA.vspace
-              [ typeHelp
-              , orderHelp
-              , exitCodeHelp
-              ]
-          ]
-
     version :: String
     version = "phatsort-haskell " ++ showVersion Project.version
 
@@ -348,3 +288,89 @@ main = phatsort =<< OA.execParser pinfo
       , ("1", "execution error")
       , ("2", "command line error")
       ]
+
+    options :: OA.Parser Options
+    options = Options
+      <$> caseOption
+      <*> firstOption
+      <*> noSyncOption
+      <*> orderOption
+      <*> reverseOption
+      <*> scriptOption
+      <*> verboseOption
+      <*> targetArguments
+
+    caseOption :: OA.Parser SortCase
+    caseOption = fmap (bool CaseSensitive CaseInsensitive) . OA.switch $
+      mconcat
+        [ OA.long "case"
+        , OA.short 'c'
+        , OA.help "case-insensitive sort"
+        ]
+
+    firstOption :: OA.Parser SortFirst
+    firstOption = OA.option (OA.eitherReader parseFirst) $ mconcat
+      [ OA.long "first"
+      , OA.short 'f'
+      , OA.metavar "TYPE"
+      , OA.value FirstNone
+      , OA.help "sort certain directory entries first"
+      ]
+
+    parseFirst :: String -> Either String SortFirst
+    parseFirst "dirs" = Right FirstDirs
+    parseFirst "files" = Right FirstFiles
+    parseFirst _ = Left "unknown first option; \"dirs\" or \"files\" expected"
+
+    noSyncOption :: OA.Parser Bool
+    noSyncOption = fmap not . OA.switch $ mconcat
+      [ OA.long "no-sync"
+      , OA.short 'n'
+      , OA.help "do not sync after each command"
+      ]
+
+    orderOption :: OA.Parser SortOrder
+    orderOption = OA.option (OA.eitherReader parseOrder) $ mconcat
+      [ OA.long "order"
+      , OA.short 'o'
+      , OA.metavar "ORDER"
+      , OA.value OrderName
+      , OA.help "desired order (default: name)"
+      ]
+
+    parseOrder :: String -> Either String SortOrder
+    parseOrder "name" = Right OrderName
+    parseOrder "time" = Right OrderTime
+    parseOrder "random" = Right OrderRandom
+    parseOrder _ = Left "unknown ORDER"
+
+    reverseOption :: OA.Parser Bool
+    reverseOption = OA.switch $ mconcat
+      [ OA.long "reverse"
+      , OA.short 'r'
+      , OA.help "reverse sort"
+      ]
+
+    scriptOption :: OA.Parser Bool
+    scriptOption = OA.switch $ mconcat
+      [ OA.long "script"
+      , OA.short 's'
+      , OA.help "output script instead of executing"
+      ]
+
+    verboseOption :: OA.Parser Bool
+    verboseOption = OA.switch $ mconcat
+      [ OA.long "verbose"
+      , OA.short 'v'
+      , OA.help "display progress"
+      ]
+
+    targetArguments :: OA.Parser [FilePath]
+    targetArguments = some . OA.strArgument $ mconcat
+      [ OA.metavar "TARGET ..."
+      , OA.help "target directories"
+      ]
+
+-- | Main function
+main :: IO ()
+main = phatsort =<< parseOptions

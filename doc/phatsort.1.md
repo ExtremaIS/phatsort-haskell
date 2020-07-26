@@ -27,22 +27,25 @@ PhatSort is a utility for sorting files and directories on a FAT filesystem.
 -c, \--case
 :   case-insensitive sort
 
--v, \--first *TYPE*
+-f, \--first *TYPE*
 :   sort certain directory entries first
 
     The following types are supported:
 
-    * `dirs` - sort directories before files
-    * `files` - sort files before directories
+    * *dirs* - sort directories before files
+    * *files* - sort files before directories
+
+-n, \--no-sync
+:   do not sync after each command
 
 -o, \--order *ORDER*
-:   desired order (default: `name`)
+:   desired order (default: *name*)
 
     The following orders are supported:
 
-    * `name` - sort by filename
-    * `time` - sort by modification time
-    * `random` - random order
+    * *name* - sort by filename
+    * *time* - sort by modification time
+    * *random* - random order
 
 -r, \--reverse
 :   reverse sort
@@ -80,7 +83,7 @@ Reporting issues:
     Email: <bugs@extrema.is>
 
 Copyright
-:   Copyright (c) 2019 Travis Cardwell
+:   Copyright (c) 2019-2020 Travis Cardwell
 
 License
 :   The MIT License <https://opensource.org/licenses/MIT>

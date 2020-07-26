@@ -2,6 +2,7 @@
 
 ## Functionality
 
+* Add delay
 * Refactor to testable library and separate executable
 * Human error messages
 

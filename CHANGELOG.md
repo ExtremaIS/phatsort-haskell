@@ -24,6 +24,18 @@ following conventions:
 
 [KaC]: <https://keepachangelog.com/en/1.0.0/>
 
+## 0.2.0.0 (2020-07-26)
+
+### Breaking
+
+* Add syncing, `--no-sync` option
+
+### Non-Breaking
+
+* Refactor `Makefile`, add `STACK_NIX_PATH` support
+* Add `test-all` command to `Makefile`
+* Add Nix configuration
+
 ## 0.1.0.3 (2019-12-22)
 
 ### Non-Breaking
