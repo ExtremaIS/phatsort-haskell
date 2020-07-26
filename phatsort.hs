@@ -35,6 +35,9 @@ import System.FilePath ((</>), splitDirectories)
 -- https://hackage.haskell.org/package/optparse-applicative
 import qualified Options.Applicative as OA
 
+-- https://hackage.haskell.org/package/process
+import qualified System.Process as Proc
+
 -- https://hackage.haskell.org/package/random-shuffle
 import System.Random.Shuffle (shuffleM)
 
@@ -79,6 +82,7 @@ data Options
     , optOrder   :: !SortOrder
     , optReverse :: !Bool
     , optScript  :: !Bool
+    , optSync    :: !Bool
     , optVerbose :: !Bool
     , optTargets :: ![FilePath]
     }
@@ -160,25 +164,33 @@ phatsort Options{..} = do
       CaseSensitive -> compare name1 name2
       CaseInsensitive -> compare (map toLower name1) (map toLower name2)
 
+    scriptSync :: IO ()
+    scriptSync
+      | optSync   = putCmd ["sync"]
+      | otherwise = return ()
+
+    sync :: IO ()
+    sync = Proc.callProcess "sync" []
+
     mvDir :: FilePath -> FilePath -> IO ()
     mvDir srcPath dstPath
-      | optScript = putCmd ["mv", srcPath, dstPath]
-      | otherwise = Dir.renameDirectory srcPath dstPath
+      | optScript = putCmd ["mv", srcPath, dstPath] >> scriptSync
+      | otherwise = Dir.renameDirectory srcPath dstPath >> sync
 
     mkDir :: FilePath -> IO ()
     mkDir path
-      | optScript = putCmd ["mkdir", path]
-      | otherwise = Dir.createDirectory path
+      | optScript = putCmd ["mkdir", path] >> scriptSync
+      | otherwise = Dir.createDirectory path >> sync
 
     rmDir :: FilePath -> IO ()
     rmDir path
-      | optScript = putCmd ["rmdir", path]
-      | otherwise = Dir.removeDirectory path
+      | optScript = putCmd ["rmdir", path] >> scriptSync
+      | otherwise = Dir.removeDirectory path >> sync
 
     mvFile :: FilePath -> FilePath -> IO ()
     mvFile srcPath dstPath
-      | optScript = putCmd ["mv", srcPath, dstPath]
-      | otherwise = Dir.renameFile srcPath dstPath
+      | optScript = putCmd ["mv", srcPath, dstPath] >> scriptSync
+      | otherwise = Dir.renameFile srcPath dstPath >> sync
 
     putProgress :: FilePath -> IO ()
     putProgress path
@@ -284,6 +296,7 @@ parseOptions = OA.execParser
       <*> orderOption
       <*> reverseOption
       <*> scriptOption
+      <*> noSyncOption
       <*> verboseOption
       <*> targetArguments
 
@@ -336,6 +349,13 @@ parseOptions = OA.execParser
       [ OA.long "script"
       , OA.short 's'
       , OA.help "output script instead of executing"
+      ]
+
+    noSyncOption :: OA.Parser Bool
+    noSyncOption = fmap not . OA.switch $ mconcat
+      [ OA.long "no-sync"
+      , OA.short 'n'
+      , OA.help "do not sync after each command"
       ]
 
     verboseOption :: OA.Parser Bool

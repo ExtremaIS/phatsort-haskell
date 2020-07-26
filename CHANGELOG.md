@@ -26,6 +26,10 @@ following conventions:
 
 ## Unreleased
 
+### Breaking
+
+* Add syncing, `--no-sync` option
+
 ### Non-Breaking
 
 * Refactor `Makefile`, add `STACK_NIX_PATH` support
