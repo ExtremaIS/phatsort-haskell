@@ -79,10 +79,10 @@ data Options
   = Options
     { optCase    :: !SortCase
     , optFirst   :: !SortFirst
+    , optSync    :: !Bool
     , optOrder   :: !SortOrder
     , optReverse :: !Bool
     , optScript  :: !Bool
-    , optSync    :: !Bool
     , optVerbose :: !Bool
     , optTargets :: ![FilePath]
     }
@@ -293,10 +293,10 @@ parseOptions = OA.execParser
     options = Options
       <$> caseOption
       <*> firstOption
+      <*> noSyncOption
       <*> orderOption
       <*> reverseOption
       <*> scriptOption
-      <*> noSyncOption
       <*> verboseOption
       <*> targetArguments
 
@@ -321,6 +321,13 @@ parseOptions = OA.execParser
     parseFirst "dirs" = Right FirstDirs
     parseFirst "files" = Right FirstFiles
     parseFirst _ = Left "unknown first option; \"dirs\" or \"files\" expected"
+
+    noSyncOption :: OA.Parser Bool
+    noSyncOption = fmap not . OA.switch $ mconcat
+      [ OA.long "no-sync"
+      , OA.short 'n'
+      , OA.help "do not sync after each command"
+      ]
 
     orderOption :: OA.Parser SortOrder
     orderOption = OA.option (OA.eitherReader parseOrder) $ mconcat
@@ -349,13 +356,6 @@ parseOptions = OA.execParser
       [ OA.long "script"
       , OA.short 's'
       , OA.help "output script instead of executing"
-      ]
-
-    noSyncOption :: OA.Parser Bool
-    noSyncOption = fmap not . OA.switch $ mconcat
-      [ OA.long "no-sync"
-      , OA.short 'n'
-      , OA.help "do not sync after each command"
       ]
 
     verboseOption :: OA.Parser Bool
