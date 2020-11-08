@@ -132,7 +132,7 @@ repl: # enter a REPL *
 source-git: # create source tarball of git TREE
 > $(eval TREE := "HEAD")
 > $(eval BRANCH := $(shell git rev-parse --abbrev-ref $(TREE)))
-> @test "${BRANCH}" = "master" || echo "WARNING: Not in master branch!" >&2
+> @test "${BRANCH}" = "main" || echo "WARNING: Not in main branch!" >&2
 > $(eval VERSION := $(shell \
     grep '^version:' $(CABAL_FILE) | sed 's/^version: *//'))
 > @mkdir -p build
@@ -205,7 +205,9 @@ todo: # search for TODO items
 >   -not -path './build/*' \
 >   -not -path './project/*' \
 >   -not -path ./Makefile \
->   | xargs grep -Hn TODO || true
+>   | xargs grep -Hn TODO \
+>   | grep -v '^Binary file ' \
+>   || true
 .PHONY: todo
 
 version: # show current version
