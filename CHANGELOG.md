@@ -26,6 +26,10 @@ following conventions:
 
 ## Unreleased
 
+### Non-Breaking
+
+* Rename Git default branch to `main`
+
 ## 0.2.0.0 (2020-07-26)
 
 ### Breaking
