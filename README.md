@@ -1,6 +1,6 @@
 # PhatSort
 
-[![Build Status](https://travis-ci.com/ExtremaIS/phatsort-haskell.svg?branch=main)](https://travis-ci.com/ExtremaIS/phatsort-haskell)
+[![GitHub CI](https://github.com/ExtremaIS/phatsort-haskell/workflows/CI/badge.svg?branch=main)](https://github.com/ExtremaIS/phatsort-haskell/actions)
 
 * [Overview](#overview)
 * [Requirements](#requirements)
