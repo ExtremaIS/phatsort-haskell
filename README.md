@@ -1,5 +1,7 @@
 # PhatSort
 
+[![GitHub CI](https://github.com/ExtremaIS/phatsort-haskell/workflows/CI/badge.svg?branch=main)](https://github.com/ExtremaIS/phatsort-haskell/actions)
+
 * [Overview](#overview)
 * [Requirements](#requirements)
 * [Installation](#installation)
