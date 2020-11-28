@@ -37,7 +37,7 @@ have been tried so far.
 
 ## Requirements
 
-PhatSort has only been tested on Linux.  It *might* work on Windows and OS X.
+PhatSort has only been tested on Linux.  It *might* work on Windows and macOS.
 Scripts that are output use POSIX shell commands and therefore require a POSIX
 shell to execute.
 
