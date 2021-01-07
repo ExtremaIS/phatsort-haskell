@@ -2,7 +2,7 @@
 -- |
 -- Module      : Main
 -- Description : PhatSort: a FAT filesystem sort utility
--- Copyright   : Copyright (c) 2019-2020 Travis Cardwell
+-- Copyright   : Copyright (c) 2019-2021 Travis Cardwell
 -- License     : MIT
 --
 -- See the README for details.
