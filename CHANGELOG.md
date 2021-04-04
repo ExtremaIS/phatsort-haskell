@@ -29,6 +29,7 @@ following conventions:
 ### Non-Breaking
 
 * Add support for `optparse-applicative` `0.16`
+* Add Cabal support to `Makefile`
 
 ## 0.2.0.2 (2020-11-23)
 
