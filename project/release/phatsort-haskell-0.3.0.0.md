@@ -1,0 +1,10 @@
+# `phatsort-haskell` `0.3.0.0` Release Notes
+
+Date
+: 2021-05-27
+
+## Overview
+
+This is a maintenance release of PhatSort, adding `.deb` and `.rpm` packaging.
+In addition, support for `optparse-applicative` `0.16` is added.  There are no
+changes to the CLI in this release.

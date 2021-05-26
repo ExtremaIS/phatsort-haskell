@@ -70,7 +70,7 @@ PhatSort is a utility for sorting files and directories on a FAT filesystem.
 :   execution error
 
 2
-:   command line error
+:   command-line error
 
 # PROJECT
 
@@ -83,7 +83,7 @@ Reporting issues:
     Email: <bugs@extrema.is>
 
 Copyright
-:   Copyright (c) 2019-2020 Travis Cardwell
+:   Copyright (c) 2019-2021 Travis Cardwell
 
 License
 :   The MIT License <https://opensource.org/licenses/MIT>

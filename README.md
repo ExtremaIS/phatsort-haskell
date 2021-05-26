@@ -1,11 +1,14 @@
 # PhatSort
 
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![GitHub CI](https://github.com/ExtremaIS/phatsort-haskell/workflows/CI/badge.svg?branch=main)](https://github.com/ExtremaIS/phatsort-haskell/actions)
 
 * [Overview](#overview)
 * [Requirements](#requirements)
 * [Installation](#installation)
     * [Installation From Source](#installation-from-source)
+    * [`.deb` Package Installation](#deb-package-installation)
+    * [`.rpm` Package Installation](#rpm-package-installation)
 * [Usage](#usage)
 * [Related Software](#related-software)
 * [Project](#project)
@@ -37,7 +40,7 @@ have been tried so far.
 
 ## Requirements
 
-PhatSort has only been tested on Linux.  It *might* work on Windows and OS X.
+PhatSort has only been tested on Linux.  It *might* work on Windows and macOS.
 Scripts that are output use POSIX shell commands and therefore require a POSIX
 shell to execute.
 
@@ -45,15 +48,27 @@ shell to execute.
 
 ### Installation From Source
 
-PhatSort can be built from source using [Stack](https://www.haskellstack.org).
-For example, you can install the latest release (to `~/.local/bin` on Linux)
-as follows:
+PhatSort can be built from source using [Stack][].  For example, you can
+install the latest release (to `/usr/bin` on Linux) as follows:
 
 ```
 $ git clone https://github.com/ExtremaIS/phatsort-haskell.git
 $ cd phatsort-haskell
-$ stack install
+$ make
+$ sudo make install
 ```
+
+[Stack]: <https://www.haskellstack.org>
+
+#### `.deb` Package Installation
+
+Check the [Releases][] page for `.deb` packages.
+
+#### `.rpm` Package Installation
+
+Check the [Releases][] page for `.rpm` packages.
+
+[Releases]: <https://github.com/ExtremaIS/phatsort-haskell/releases>
 
 ## Usage
 
