@@ -24,7 +24,7 @@ following conventions:
 
 [KaC]: <https://keepachangelog.com/en/1.0.0/>
 
-## Unreleased
+## 0.4.0.0 (2021-06-25)
 
 ### Breaking
 
@@ -34,7 +34,7 @@ following conventions:
 
 * Refactor Nix configuration
 
-## 0.3.0.0 (2020-05-27)
+## 0.3.0.0 (2021-05-27)
 
 ### Breaking
 
