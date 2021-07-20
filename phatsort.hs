@@ -270,23 +270,23 @@ parseOptions = OA.execParser
     version = "phatsort-haskell " ++ showVersion Project.version
 
     typeHelp :: Doc
-    typeHelp = LibOA.section "TYPE choices:" $ LibOA.table
-      [ ("dirs", "sort directories before files")
-      , ("files", "sort files before directories")
+    typeHelp = LibOA.section "TYPE choices:" $ LibOA.table_ 2
+      [ ["dirs", "sort directories before files"]
+      , ["files", "sort files before directories"]
       ]
 
     orderHelp :: Doc
-    orderHelp = LibOA.section "ORDER choices:" $ LibOA.table
-      [ ("name", "sort by filename")
-      , ("time", "sort by modification time")
-      , ("random", "random order")
+    orderHelp = LibOA.section "ORDER choices:" $ LibOA.table_ 2
+      [ ["name", "sort by filename"]
+      , ["time", "sort by modification time"]
+      , ["random", "random order"]
       ]
 
     exitCodeHelp :: Doc
-    exitCodeHelp = LibOA.section "Exit codes:" $ LibOA.table
-      [ ("0", "no error")
-      , ("1", "execution error")
-      , ("2", "command line error")
+    exitCodeHelp = LibOA.section "Exit codes:" $ LibOA.table_ 2
+      [ ["0", "no error"]
+      , ["1", "execution error"]
+      , ["2", "command line error"]
       ]
 
     options :: OA.Parser Options
