@@ -1,0 +1,17 @@
+resolver: ghc-9.2
+
+packages:
+  - .
+
+extra-deps:
+  - ansi-terminal-0.11
+  - ansi-wl-pprint-0.6.9
+  - colour-2.3.6
+  - MonadRandom-0.5.3
+  - optparse-applicative-0.16.1.0
+  - primitive-0.7.3.0
+  - random-1.2.1
+  - random-shuffle-0.0.4
+  - splitmix-0.1.0.4
+  - transformers-0.5.6.2
+  - transformers-compat-0.7.1
