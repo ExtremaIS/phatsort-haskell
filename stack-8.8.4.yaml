@@ -2,3 +2,11 @@ resolver: lts-16.31
 
 packages:
   - .
+
+extra-deps:
+  - constraints-0.13.2
+  - explainable-predicates-0.1.2.0
+  - git: https://github.com/cdsmith/HMock.git
+    commit: b073d0ed096e38f46f1cb8ab526e2e92f24adbbb
+  - syb-0.7.2.1
+  - unliftio-0.2.20
