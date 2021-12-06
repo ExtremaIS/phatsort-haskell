@@ -89,10 +89,8 @@ test-suite phatsort-test
   type: exitcode-stdio-1.0
   hs-source-dirs: test
   main-is: Spec.hs
-  -- other-modules:
   build-depends:
       base
-    , dlist >=0.8 && <1.1
     , MonadRandom
     , phatsort
     , tasty >=1.0 && <1.5
