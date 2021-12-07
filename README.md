@@ -36,7 +36,8 @@ Unfortunately, there are many devices for which this does not work.
 PhatSort takes a different approach to solving the problem.  It works by
 creating new directories and moving ("renaming") the files in the desired
 order, while the filesystem is mounted.  This method works on all devices that
-have been tried so far.
+have been tried so far.  Note that it can only be used with directories under
+the mount point.
 
 ## Requirements
 
