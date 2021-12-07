@@ -1,8 +1,8 @@
 ------------------------------------------------------------------------------
 -- |
 -- Module      : PhatSort.Monad.Trans.Error
--- Description : error management
--- Copyright   : Copyright (c) 2021 Travis Cardwell
+-- Description : error monad transformer
+-- Copyright   : Copyright (c) 2019-2021 Travis Cardwell
 -- License     : MIT
 ------------------------------------------------------------------------------
 

@@ -1,3 +1,11 @@
+------------------------------------------------------------------------------
+-- |
+-- Module      : Main
+-- Description : phatsort CLI
+-- Copyright   : Copyright (c) 2019-2021 Travis Cardwell
+-- License     : MIT
+------------------------------------------------------------------------------
+
 module Main (main) where
 
 -- https://hackage.haskell.org/package/base

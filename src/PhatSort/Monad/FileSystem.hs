@@ -2,7 +2,7 @@
 -- |
 -- Module      : PhatSort.Monad.FileSystem
 -- Description : filesystem I/O
--- Copyright   : Copyright (c) 2021 Travis Cardwell
+-- Copyright   : Copyright (c) 2019-2021 Travis Cardwell
 -- License     : MIT
 ------------------------------------------------------------------------------
 
@@ -28,9 +28,9 @@ import Control.Monad.Trans.Except (ExceptT)
 import qualified System.PosixCompat.Files as Files
 
 ------------------------------------------------------------------------------
--- $MonadFileStatus
+-- $MonadFileSystem
 
--- | A 'Monad' that supports filesystem IO
+-- | Filesystem I/O
 class Monad m => MonadFileSystem m where
   -- | Create a directory
   createDirectory :: FilePath -> m (Either IOError ())
@@ -115,6 +115,7 @@ instance MonadFileSystem m => MonadFileSystem (ExceptT e m) where
 ------------------------------------------------------------------------------
 -- $FileStatus
 
+-- | Mockable subset of 'Files.FileStatus'
 data FileStatus
   = FileStatus
     { deviceID         :: !DeviceID
@@ -122,6 +123,7 @@ data FileStatus
     , modificationTime :: !EpochTime
     }
 
+-- | Convert from 'Files.FileStatus' to 'FileStatus'
 toFileStatus :: Files.FileStatus -> FileStatus
 toFileStatus status = FileStatus
     { deviceID         = Files.deviceID status

@@ -1,3 +1,11 @@
+------------------------------------------------------------------------------
+-- |
+-- Module      : PhatSort.Monad.Sync
+-- Description : commit all data in filesystem buffers
+-- Copyright   : Copyright (c) 2019-2021 Travis Cardwell
+-- License     : MIT
+------------------------------------------------------------------------------
+
 {-# LANGUAGE CPP #-}
 
 module PhatSort.Monad.Sync
@@ -17,8 +25,12 @@ import PhatSort.Monad.Sync.Unistd (c_sync)
 ------------------------------------------------------------------------------
 -- $MonadSync
 
--- commit filesystem caches to disk
+-- | Commit all data in filesystem buffers
 class Monad m => MonadSync m where
+  -- | Commit all data in filesystem buffers
+  --
+  -- This method calls the @sync@ system call on POSIX systems.  It does
+  -- nothing on Windows.
   sync :: m ()
 
 instance MonadSync IO where

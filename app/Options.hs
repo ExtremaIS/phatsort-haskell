@@ -1,3 +1,11 @@
+------------------------------------------------------------------------------
+-- |
+-- Module      : Options
+-- Description : CLI options and help documentation
+-- Copyright   : Copyright (c) 2019-2021 Travis Cardwell
+-- License     : MIT
+------------------------------------------------------------------------------
+
 module Options where
 
 -- https://hackage.haskell.org/package/ansi-wl-pprint

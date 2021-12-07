@@ -1,3 +1,11 @@
+------------------------------------------------------------------------------
+-- |
+-- Module      : PhatSort.Cmd.PhatSort
+-- Description : phatsort command implementation
+-- Copyright   : Copyright (c) 2019-2021 Travis Cardwell
+-- License     : MIT
+------------------------------------------------------------------------------
+
 {-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 
@@ -43,6 +51,7 @@ import PhatSort.SortOptions
 ------------------------------------------------------------------------------
 -- $Options
 
+-- | Command options
 data Options
   = Options
     { optCase    :: !SortCase
@@ -59,11 +68,13 @@ data Options
 ------------------------------------------------------------------------------
 -- $API
 
+-- | Run the command in the 'IO' monad
 runIO :: Options -> IO (Either String ())
 runIO = Error.run . run
 
 ------------------------------------------------------------------------------
 
+-- | Run the command
 run
   :: forall m
    . (MonadFileSystem m, MonadRandom m, MonadStdio m, MonadSync m)
@@ -155,16 +166,17 @@ run Options{..} = do
 -- | Target directory
 data Target
   = Target
-    { targetArgPath :: !FilePath
-    , targetSrcPath :: !FilePath
-    , targetDstPath :: !FilePath
+    { targetArgPath :: !FilePath  -- ^ path for verbose and errors
+    , targetSrcPath :: !FilePath  -- ^ absolute source path (@-phat@)
+    , targetDstPath :: !FilePath  -- ^ absolute destination path
     }
 
 ------------------------------------------------------------------------------
 
+-- | Create a 'Target' for a target argument, performing checks
 getTarget
   :: MonadFileSystem m
-  => FilePath
+  => FilePath  -- ^ target argument
   -> ErrorT m Target
 getTarget targetArgPath = do
     when ("-phat" `isSuffixOf` targetArgPath) .
@@ -188,10 +200,10 @@ getTarget targetArgPath = do
 -- | Directory entry
 data Entry
   = Entry
-    { entryName    :: !FilePath
-    , entryArgPath :: !FilePath
-    , entrySrcPath :: !FilePath
-    , entryDstPath :: !FilePath
+    { entryName    :: !FilePath  -- ^ filename
+    , entryArgPath :: !FilePath  -- ^ path for verbose and errors
+    , entrySrcPath :: !FilePath  -- ^ absolute source path
+    , entryDstPath :: !FilePath  -- ^ absolute desination path
     , entryStatus  :: !FS.FileStatus
     }
 
@@ -201,9 +213,9 @@ data Entry
 getEntries
   :: MonadFileSystem m
   => Bool      -- ^ script?
-  -> FilePath  -- ^ arg directory
-  -> FilePath  -- ^ source directory
-  -> FilePath  -- ^ destination directory
+  -> FilePath  -- ^ path for verbose and errors
+  -> FilePath  -- ^ absolute source path
+  -> FilePath  -- ^ absolute destination path
   -> ErrorT m [Entry]
 getEntries isScript argDir srcDir dstDir = do
     names <- Error.errorTE $

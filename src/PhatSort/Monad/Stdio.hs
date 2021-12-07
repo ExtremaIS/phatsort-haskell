@@ -1,3 +1,11 @@
+------------------------------------------------------------------------------
+-- |
+-- Module      : PhatSort.Monad.Stdio
+-- Description : standard I/O
+-- Copyright   : Copyright (c) 2019-2021 Travis Cardwell
+-- License     : MIT
+------------------------------------------------------------------------------
+
 module PhatSort.Monad.Stdio
   ( -- * MonadStdio
     MonadStdio(..)
@@ -14,7 +22,9 @@ import Control.Monad.Trans.Except (ExceptT)
 ------------------------------------------------------------------------------
 -- $MonadStdio
 
+-- | Standard I/O
 class Monad m => MonadStdio m where
+  -- | Write a 'String' to @STDOUT@, appending a newline
   putStrLn :: String -> m ()
 
 instance MonadStdio IO where
