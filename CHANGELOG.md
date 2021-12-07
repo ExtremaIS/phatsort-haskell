@@ -26,6 +26,15 @@ following conventions:
 
 ## Unreleased
 
+### Breaking
+
+* Check that each target directory is not a mount point
+* Call `sync` system call via FFI instead of running the `sync` command
+
+### Non-Breaking
+
+* Add tests using mocking
+
 ## 0.4.0.0 (2021-06-25)
 
 ### Breaking
