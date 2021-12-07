@@ -27,10 +27,10 @@ import System.Random.Shuffle (shuffleM)
 -- (phatsort)
 import qualified PhatSort.Monad.FileSystem as FS
 import PhatSort.Monad.FileSystem (MonadFileSystem)
-import qualified PhatSort.Monad.Process as Proc
-import PhatSort.Monad.Process (MonadProcess)
 import qualified PhatSort.Monad.Stdio as Stdio
 import PhatSort.Monad.Stdio (MonadStdio)
+import qualified PhatSort.Monad.Sync as Sync
+import PhatSort.Monad.Sync (MonadSync)
 import qualified PhatSort.Monad.Trans.Error as Error
 import PhatSort.Monad.Trans.Error (ErrorT)
 import qualified PhatSort.Script as Script
@@ -66,7 +66,7 @@ runIO = Error.run . run
 
 run
   :: forall m
-   . (MonadFileSystem m, MonadProcess m, MonadRandom m, MonadStdio m)
+   . (MonadFileSystem m, MonadRandom m, MonadStdio m, MonadSync m)
   => Options
   -> ErrorT m ()
 run Options{..} = do
@@ -147,7 +147,7 @@ run Options{..} = do
     sync
       | not optSync = pure ()
       | optScript = Stdio.putStrLn $ Script.formatCommand ["sync"]
-      | otherwise = Error.errorTE $ Proc.callProcess "sync" []
+      | otherwise = Sync.sync
 
 ------------------------------------------------------------------------------
 -- $Internal

@@ -44,8 +44,8 @@ import PhatSort.Cmd.PhatSort
   , run
   )
 import PhatSort.Monad.FileSystem (MonadFileSystem, FileStatus(FileStatus))
-import PhatSort.Monad.Process (MonadProcess)
 import PhatSort.Monad.Stdio (MonadStdio)
+import PhatSort.Monad.Sync (MonadSync)
 import qualified PhatSort.Monad.Trans.Error as Error
 import PhatSort.SortOptions
   ( SortCase(CaseInsensitive, CaseSensitive)
@@ -57,9 +57,9 @@ import PhatSort.SortOptions
 
 makeMockable [t|MonadFileSystem|]
 
-makeMockable [t|MonadProcess|]
-
 makeMockable [t|MonadStdio|]
+
+makeMockable [t|MonadSync|]
 
 ------------------------------------------------------------------------------
 
@@ -104,9 +104,9 @@ testCaseSensitive = testCase "CaseSensitive" . runMockT $ do
       , expect $ GetFileStatus "/a/b" |-> Right (FileStatus 11 True 100)
       , expect $ DoesPathExist "/a/b/one-phat" |-> Right False
       , expect $ RenameDirectory "/a/b/one" "/a/b/one-phat" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ CreateDirectory "/a/b/one" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ ListDirectory "/a/b/one-phat" |->
           Right ["Uno.mp3", "dos.mp3", "tres.mp3"]
       , expect $ GetFileStatus "/a/b/one-phat/Uno.mp3" |->
@@ -117,15 +117,15 @@ testCaseSensitive = testCase "CaseSensitive" . runMockT $ do
           Right (FileStatus 11 False 3000)
       , expect $ RenameFile "/a/b/one-phat/Uno.mp3" "/a/b/one/Uno.mp3" |->
           Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ RenameFile "/a/b/one-phat/dos.mp3" "/a/b/one/dos.mp3" |->
           Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ RenameFile "/a/b/one-phat/tres.mp3" "/a/b/one/tres.mp3" |->
           Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ RemoveDirectory "/a/b/one-phat" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       ]
     assertSuccess <=< Error.run $ run defaultOptions
       { optTargets = ["one"]
@@ -176,9 +176,9 @@ testCaseInsensitive = testCase "CaseInsensitive" . runMockT $ do
       , expect $ GetFileStatus "/a/b" |-> Right (FileStatus 11 True 100)
       , expect $ DoesPathExist "/a/b/one-phat" |-> Right False
       , expect $ RenameDirectory "/a/b/one" "/a/b/one-phat" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ CreateDirectory "/a/b/one" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ ListDirectory "/a/b/one-phat" |->
           Right ["Uno.mp3", "dos.mp3", "tres.mp3"]
       , expect $ GetFileStatus "/a/b/one-phat/Uno.mp3" |->
@@ -189,15 +189,15 @@ testCaseInsensitive = testCase "CaseInsensitive" . runMockT $ do
           Right (FileStatus 11 False 3000)
       , expect $ RenameFile "/a/b/one-phat/dos.mp3" "/a/b/one/dos.mp3" |->
           Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ RenameFile "/a/b/one-phat/tres.mp3" "/a/b/one/tres.mp3" |->
           Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ RenameFile "/a/b/one-phat/Uno.mp3" "/a/b/one/Uno.mp3" |->
           Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ RemoveDirectory "/a/b/one-phat" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       ]
     assertSuccess <=< Error.run $ run defaultOptions
       { optCase    = CaseInsensitive
@@ -250,9 +250,9 @@ testFirstNone = testCase "FirstNone" . runMockT $ do
       , expect $ GetFileStatus "/a/b" |-> Right (FileStatus 11 True 100)
       , expect $ DoesPathExist "/a/b/one-phat" |-> Right False
       , expect $ RenameDirectory "/a/b/one" "/a/b/one-phat" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ CreateDirectory "/a/b/one" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ ListDirectory "/a/b/one-phat" |->
           Right ["Uno.mp3", "three", "dos.mp3", "two", "tres.mp3"]
       , expect $ GetFileStatus "/a/b/one-phat/Uno.mp3" |->
@@ -267,25 +267,25 @@ testFirstNone = testCase "FirstNone" . runMockT $ do
           Right (FileStatus 11 False 3000)
       , expect $ RenameFile "/a/b/one-phat/Uno.mp3" "/a/b/one/Uno.mp3" |->
           Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ RenameFile "/a/b/one-phat/dos.mp3" "/a/b/one/dos.mp3" |->
           Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ CreateDirectory "/a/b/one/three" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ ListDirectory "/a/b/one-phat/three" |-> Right []
       , expect $ RemoveDirectory "/a/b/one-phat/three" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ RenameFile "/a/b/one-phat/tres.mp3" "/a/b/one/tres.mp3" |->
           Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ CreateDirectory "/a/b/one/two" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ ListDirectory "/a/b/one-phat/two" |-> Right []
       , expect $ RemoveDirectory "/a/b/one-phat/two" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ RemoveDirectory "/a/b/one-phat" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       ]
     assertSuccess <=< Error.run $ run defaultOptions
       { optTargets = ["one"]
@@ -350,9 +350,9 @@ testFirstDirs = testCase "FirstDirs" . runMockT$ do
       , expect $ GetFileStatus "/a/b" |-> Right (FileStatus 11 True 100)
       , expect $ DoesPathExist "/a/b/one-phat" |-> Right False
       , expect $ RenameDirectory "/a/b/one" "/a/b/one-phat" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ CreateDirectory "/a/b/one" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ ListDirectory "/a/b/one-phat" |->
           Right ["Uno.mp3", "three", "dos.mp3", "two", "tres.mp3"]
       , expect $ GetFileStatus "/a/b/one-phat/Uno.mp3" |->
@@ -366,26 +366,26 @@ testFirstDirs = testCase "FirstDirs" . runMockT$ do
       , expect $ GetFileStatus "/a/b/one-phat/tres.mp3" |->
           Right (FileStatus 11 False 3000)
       , expect $ CreateDirectory "/a/b/one/three" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ ListDirectory "/a/b/one-phat/three" |-> Right []
       , expect $ RemoveDirectory "/a/b/one-phat/three" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ CreateDirectory "/a/b/one/two" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ ListDirectory "/a/b/one-phat/two" |-> Right []
       , expect $ RemoveDirectory "/a/b/one-phat/two" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ RenameFile "/a/b/one-phat/Uno.mp3" "/a/b/one/Uno.mp3" |->
           Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ RenameFile "/a/b/one-phat/dos.mp3" "/a/b/one/dos.mp3" |->
           Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ RenameFile "/a/b/one-phat/tres.mp3" "/a/b/one/tres.mp3" |->
           Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ RemoveDirectory "/a/b/one-phat" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       ]
     assertSuccess <=< Error.run $ run defaultOptions
       { optFirst   = FirstDirs
@@ -452,9 +452,9 @@ testFirstFiles = testCase "FirstFiles" . runMockT $ do
       , expect $ GetFileStatus "/a/b" |-> Right (FileStatus 11 True 100)
       , expect $ DoesPathExist "/a/b/one-phat" |-> Right False
       , expect $ RenameDirectory "/a/b/one" "/a/b/one-phat" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ CreateDirectory "/a/b/one" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ ListDirectory "/a/b/one-phat" |->
           Right ["Uno.mp3", "three", "dos.mp3", "two", "tres.mp3"]
       , expect $ GetFileStatus "/a/b/one-phat/Uno.mp3" |->
@@ -469,25 +469,25 @@ testFirstFiles = testCase "FirstFiles" . runMockT $ do
           Right (FileStatus 11 False 3000)
       , expect $ RenameFile "/a/b/one-phat/Uno.mp3" "/a/b/one/Uno.mp3" |->
           Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ RenameFile "/a/b/one-phat/dos.mp3" "/a/b/one/dos.mp3" |->
           Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ RenameFile "/a/b/one-phat/tres.mp3" "/a/b/one/tres.mp3" |->
           Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ CreateDirectory "/a/b/one/three" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ ListDirectory "/a/b/one-phat/three" |-> Right []
       , expect $ RemoveDirectory "/a/b/one-phat/three" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ CreateDirectory "/a/b/one/two" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ ListDirectory "/a/b/one-phat/two" |-> Right []
       , expect $ RemoveDirectory "/a/b/one-phat/two" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ RemoveDirectory "/a/b/one-phat" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       ]
     assertSuccess <=< Error.run $ run defaultOptions
       { optFirst   = FirstFiles
@@ -616,9 +616,9 @@ testOrderNameReverse = testCase "OrderNameReverse" . runMockT $ do
       , expect $ GetFileStatus "/a/b" |-> Right (FileStatus 11 True 100)
       , expect $ DoesPathExist "/a/b/one-phat" |-> Right False
       , expect $ RenameDirectory "/a/b/one" "/a/b/one-phat" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ CreateDirectory "/a/b/one" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ ListDirectory "/a/b/one-phat" |->
           Right ["Uno.mp3", "three", "dos.mp3", "two", "tres.mp3"]
       , expect $ GetFileStatus "/a/b/one-phat/Uno.mp3" |->
@@ -632,26 +632,26 @@ testOrderNameReverse = testCase "OrderNameReverse" . runMockT $ do
       , expect $ GetFileStatus "/a/b/one-phat/tres.mp3" |->
           Right (FileStatus 11 False 3000)
       , expect $ CreateDirectory "/a/b/one/two" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ ListDirectory "/a/b/one-phat/two" |-> Right []
       , expect $ RemoveDirectory "/a/b/one-phat/two" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ CreateDirectory "/a/b/one/three" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ ListDirectory "/a/b/one-phat/three" |-> Right []
       , expect $ RemoveDirectory "/a/b/one-phat/three" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ RenameFile "/a/b/one-phat/tres.mp3" "/a/b/one/tres.mp3" |->
           Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ RenameFile "/a/b/one-phat/dos.mp3" "/a/b/one/dos.mp3" |->
           Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ RenameFile "/a/b/one-phat/Uno.mp3" "/a/b/one/Uno.mp3" |->
           Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ RemoveDirectory "/a/b/one-phat" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       ]
     assertSuccess <=< Error.run $ run defaultOptions
       { optFirst   = FirstDirs
@@ -720,9 +720,9 @@ testOrderTime = testCase "OrderTime" . runMockT $ do
       , expect $ GetFileStatus "/a/b" |-> Right (FileStatus 11 True 100)
       , expect $ DoesPathExist "/a/b/one-phat" |-> Right False
       , expect $ RenameDirectory "/a/b/one" "/a/b/one-phat" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ CreateDirectory "/a/b/one" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ ListDirectory "/a/b/one-phat" |->
           Right ["Uno.mp3", "three", "dos.mp3", "two", "tres.mp3"]
       , expect $ GetFileStatus "/a/b/one-phat/Uno.mp3" |->
@@ -736,26 +736,26 @@ testOrderTime = testCase "OrderTime" . runMockT $ do
       , expect $ GetFileStatus "/a/b/one-phat/tres.mp3" |->
           Right (FileStatus 11 False 3000)
       , expect $ CreateDirectory "/a/b/one/two" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ ListDirectory "/a/b/one-phat/two" |-> Right []
       , expect $ RemoveDirectory "/a/b/one-phat/two" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ CreateDirectory "/a/b/one/three" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ ListDirectory "/a/b/one-phat/three" |-> Right []
       , expect $ RemoveDirectory "/a/b/one-phat/three" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ RenameFile "/a/b/one-phat/tres.mp3" "/a/b/one/tres.mp3" |->
           Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ RenameFile "/a/b/one-phat/Uno.mp3" "/a/b/one/Uno.mp3" |->
           Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ RenameFile "/a/b/one-phat/dos.mp3" "/a/b/one/dos.mp3" |->
           Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ RemoveDirectory "/a/b/one-phat" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       ]
     assertSuccess <=< Error.run $ run defaultOptions
       { optFirst   = FirstDirs
@@ -824,9 +824,9 @@ testOrderTimeReverse = testCase "OrderTimeReverse" . runMockT $ do
       , expect $ GetFileStatus "/a/b" |-> Right (FileStatus 11 True 100)
       , expect $ DoesPathExist "/a/b/one-phat" |-> Right False
       , expect $ RenameDirectory "/a/b/one" "/a/b/one-phat" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ CreateDirectory "/a/b/one" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ ListDirectory "/a/b/one-phat" |->
           Right ["Uno.mp3", "three", "dos.mp3", "two", "tres.mp3"]
       , expect $ GetFileStatus "/a/b/one-phat/Uno.mp3" |->
@@ -840,26 +840,26 @@ testOrderTimeReverse = testCase "OrderTimeReverse" . runMockT $ do
       , expect $ GetFileStatus "/a/b/one-phat/tres.mp3" |->
           Right (FileStatus 11 False 3000)
       , expect $ CreateDirectory "/a/b/one/three" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ ListDirectory "/a/b/one-phat/three" |-> Right []
       , expect $ RemoveDirectory "/a/b/one-phat/three" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ CreateDirectory "/a/b/one/two" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ ListDirectory "/a/b/one-phat/two" |-> Right []
       , expect $ RemoveDirectory "/a/b/one-phat/two" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ RenameFile "/a/b/one-phat/dos.mp3" "/a/b/one/dos.mp3" |->
           Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ RenameFile "/a/b/one-phat/Uno.mp3" "/a/b/one/Uno.mp3" |->
           Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ RenameFile "/a/b/one-phat/tres.mp3" "/a/b/one/tres.mp3" |->
           Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ RemoveDirectory "/a/b/one-phat" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       ]
     assertSuccess <=< Error.run $ run defaultOptions
       { optFirst   = FirstDirs
@@ -930,9 +930,9 @@ testOrderRandom = testCase "OrderRandom" . runMockT $ do
       , expect $ GetFileStatus "/a/b" |-> Right (FileStatus 11 True 100)
       , expect $ DoesPathExist "/a/b/one-phat" |-> Right False
       , expect $ RenameDirectory "/a/b/one" "/a/b/one-phat" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ CreateDirectory "/a/b/one" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ ListDirectory "/a/b/one-phat" |->
           Right ["x.mp3", "y.mp3", "z.mp3", "d1", "d2", "d3"]
       , expect $ GetFileStatus "/a/b/one-phat/x.mp3" |->
@@ -950,24 +950,24 @@ testOrderRandom = testCase "OrderRandom" . runMockT $ do
       , inAnyOrder
           [ inSequence
               [ expect $ CreateDirectory "/a/b/one/d1" |-> Right ()
-              , expect $ CallProcess "sync" [] |-> Right ()
+              , expect $ Sync |-> ()
               , expect $ ListDirectory "/a/b/one-phat/d1" |-> Right []
               , expect $ RemoveDirectory "/a/b/one-phat/d1" |-> Right ()
-              , expect $ CallProcess "sync" [] |-> Right ()
+              , expect $ Sync |-> ()
               ]
           , inSequence
               [ expect $ CreateDirectory "/a/b/one/d2" |-> Right ()
-              , expect $ CallProcess "sync" [] |-> Right ()
+              , expect $ Sync |-> ()
               , expect $ ListDirectory "/a/b/one-phat/d2" |-> Right []
               , expect $ RemoveDirectory "/a/b/one-phat/d2" |-> Right ()
-              , expect $ CallProcess "sync" [] |-> Right ()
+              , expect $ Sync |-> ()
               ]
           , inSequence
               [ expect $ CreateDirectory "/a/b/one/d3" |-> Right ()
-              , expect $ CallProcess "sync" [] |-> Right ()
+              , expect $ Sync |-> ()
               , expect $ ListDirectory "/a/b/one-phat/d3" |-> Right []
               , expect $ RemoveDirectory "/a/b/one-phat/d3" |-> Right ()
-              , expect $ CallProcess "sync" [] |-> Right ()
+              , expect $ Sync |-> ()
               ]
           ]
       , inAnyOrder
@@ -975,23 +975,23 @@ testOrderRandom = testCase "OrderRandom" . runMockT $ do
               [ expect $
                   RenameFile "/a/b/one-phat/x.mp3" "/a/b/one/x.mp3" |->
                     Right ()
-              , expect $ CallProcess "sync" [] |-> Right ()
+              , expect $ Sync |-> ()
               ]
           , inSequence
               [ expect $
                   RenameFile "/a/b/one-phat/y.mp3" "/a/b/one/y.mp3" |->
                     Right ()
-              , expect $ CallProcess "sync" [] |-> Right ()
+              , expect $ Sync |-> ()
               ]
           , inSequence
               [ expect $
                   RenameFile "/a/b/one-phat/z.mp3" "/a/b/one/z.mp3" |->
                     Right ()
-              , expect $ CallProcess "sync" [] |-> Right ()
+              , expect $ Sync |-> ()
               ]
           ]
       , expect $ RemoveDirectory "/a/b/one-phat" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       ]
     assertSuccess <=< Error.run $ run defaultOptions
       { optFirst   = FirstDirs
@@ -1087,9 +1087,9 @@ testVerbose = testCase "Verbose" . runMockT $ do
       , expect $ DoesPathExist "/a/b/one-phat" |-> Right False
       , expect $ PutStrLn "one" |-> ()
       , expect $ RenameDirectory "/a/b/one" "/a/b/one-phat" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ CreateDirectory "/a/b/one" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ ListDirectory "/a/b/one-phat" |->
           Right ["Uno.mp3", "dos.mp3", "tres.mp3"]
       , expect $ GetFileStatus "/a/b/one-phat/Uno.mp3" |->
@@ -1101,17 +1101,17 @@ testVerbose = testCase "Verbose" . runMockT $ do
       , expect $ PutStrLn "one/Uno.mp3" |-> ()
       , expect $ RenameFile "/a/b/one-phat/Uno.mp3" "/a/b/one/Uno.mp3" |->
           Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ PutStrLn "one/dos.mp3" |-> ()
       , expect $ RenameFile "/a/b/one-phat/dos.mp3" "/a/b/one/dos.mp3" |->
           Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ PutStrLn "one/tres.mp3" |-> ()
       , expect $ RenameFile "/a/b/one-phat/tres.mp3" "/a/b/one/tres.mp3" |->
           Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ RemoveDirectory "/a/b/one-phat" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       ]
     assertSuccess <=< Error.run $ run defaultOptions
       { optVerbose = True
@@ -1173,9 +1173,9 @@ testMultipleTargets = testCase "MultipleTargets" . runMockT $ do
       , expect $ GetFileStatus "/a/b" |-> Right (FileStatus 11 True 100)
       , expect $ DoesPathExist "/a/b/two-phat" |-> Right False
       , expect $ RenameDirectory "/a/b/one" "/a/b/one-phat" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ CreateDirectory "/a/b/one" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ ListDirectory "/a/b/one-phat" |->
           Right ["Uno.mp3", "dos.mp3", "tres.mp3"]
       , expect $ GetFileStatus "/a/b/one-phat/Uno.mp3" |->
@@ -1186,19 +1186,19 @@ testMultipleTargets = testCase "MultipleTargets" . runMockT $ do
           Right (FileStatus 11 False 3000)
       , expect $ RenameFile "/a/b/one-phat/Uno.mp3" "/a/b/one/Uno.mp3" |->
           Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ RenameFile "/a/b/one-phat/dos.mp3" "/a/b/one/dos.mp3" |->
           Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ RenameFile "/a/b/one-phat/tres.mp3" "/a/b/one/tres.mp3" |->
           Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ RemoveDirectory "/a/b/one-phat" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ RenameDirectory "/a/b/two" "/a/b/two-phat" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ CreateDirectory "/a/b/two" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ ListDirectory "/a/b/two-phat" |->
           Right ["san.mp3", "ni.mp3", "ichi.mp3"]
       , expect $ GetFileStatus "/a/b/two-phat/san.mp3" |->
@@ -1209,15 +1209,15 @@ testMultipleTargets = testCase "MultipleTargets" . runMockT $ do
           Right (FileStatus 11 False 1000)
       , expect $ RenameFile "/a/b/two-phat/ichi.mp3" "/a/b/two/ichi.mp3" |->
           Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ RenameFile "/a/b/two-phat/ni.mp3" "/a/b/two/ni.mp3" |->
           Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ RenameFile "/a/b/two-phat/san.mp3" "/a/b/two/san.mp3" |->
           Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       , expect $ RemoveDirectory "/a/b/two-phat" |-> Right ()
-      , expect $ CallProcess "sync" [] |-> Right ()
+      , expect $ Sync |-> ()
       ]
     assertSuccess <=< Error.run $ run defaultOptions
       { optTargets = ["one", "two"]
