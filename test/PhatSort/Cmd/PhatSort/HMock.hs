@@ -1,39 +1,16 @@
-{-# LANGUAGE BangPatterns #-}
-{-# LANGUAGE DataKinds #-}
-{-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE GADTs #-}
-{-# LANGUAGE LambdaCase #-}
-{-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE ScopedTypeVariables #-}
-{-# LANGUAGE TemplateHaskell #-}
-{-# LANGUAGE TypeFamilies #-}
-
-{-# OPTIONS_GHC -fno-warn-orphans #-}
-
 module PhatSort.Cmd.PhatSort.HMock (tests) where
 
 -- https://hackage.haskell.org/package/base
 import Control.Monad ((<=<))
-import Control.Monad.IO.Class (MonadIO(liftIO))
-import GHC.Stack (HasCallStack)
 
 -- https://hackage.haskell.org/package/HMock
-import Test.HMock
-  ( (|->), MockT, expect, inAnyOrder, inSequence, makeMockable, runMockT
-  )
-
--- https://hackage.haskell.org/package/MonadRandom
-import qualified Control.Monad.Random.Lazy as Rand
-import Control.Monad.Random.Lazy (MonadRandom)
+import Test.HMock ((|->), expect, inAnyOrder, inSequence, runMockT)
 
 -- https://hackage.haskell.org/package/tasty
 import Test.Tasty (TestTree, testGroup)
 
 -- https://hackage.haskell.org/package/tasty-hunit
-import Test.Tasty.HUnit ((@=?), assertFailure, testCase)
-
--- https://hackage.haskell.org/package/transformers
-import Control.Monad.Trans.Class (lift)
+import Test.Tasty.HUnit (testCase)
 
 -- (phatsort)
 import PhatSort.Cmd.PhatSort
@@ -43,9 +20,7 @@ import PhatSort.Cmd.PhatSort
       )
   , run
   )
-import PhatSort.Monad.FileSystem (MonadFileSystem, FileStatus(FileStatus))
-import PhatSort.Monad.Stdio (MonadStdio)
-import PhatSort.Monad.Sync (MonadSync)
+import PhatSort.Monad.FileSystem (FileStatus(FileStatus))
 import qualified PhatSort.Monad.Trans.Error as Error
 import PhatSort.SortOptions
   ( SortCase(CaseInsensitive, CaseSensitive)
@@ -53,31 +28,8 @@ import PhatSort.SortOptions
   , SortOrder(OrderName, OrderRandom, OrderTime)
   )
 
-------------------------------------------------------------------------------
-
-makeMockable [t|MonadFileSystem|]
-
-makeMockable [t|MonadStdio|]
-
-makeMockable [t|MonadSync|]
-
-------------------------------------------------------------------------------
-
-instance MonadRandom m => MonadRandom (MockT m) where
-  getRandomR  = lift . Rand.getRandomR
-  getRandom   = lift   Rand.getRandom
-  getRandomRs = lift . Rand.getRandomRs
-  getRandoms  = lift   Rand.getRandoms
-
-------------------------------------------------------------------------------
-
-assertSuccess
-  :: (HasCallStack, MonadIO m)
-  => Either String ()
-  -> m ()
-assertSuccess = \case
-    Right () -> pure ()
-    Left err -> liftIO . assertFailure $ "unexpected error: " ++ err
+-- (phatsort:test)
+import TestLib
 
 ------------------------------------------------------------------------------
 
@@ -92,6 +44,8 @@ defaultOptions = Options
     , optVerbose = False
     , optTargets = []
     }
+
+-- TODO NonEmpty
 
 ------------------------------------------------------------------------------
 
@@ -1285,73 +1239,69 @@ testMultipleTargetsScript = testCase "MultipleTargetsScript" . runMockT $ do
 ------------------------------------------------------------------------------
 
 testTargetNotFound :: TestTree
-testTargetNotFound = testCase "TargetNotFound" $ do
-    Left err <- runMockT $ do
-      inSequence
-        [ expect $ MakeAbsolute "one" |->
-            Left (userError "file not found: one")
-        ]
-      Error.run $ run defaultOptions
+testTargetNotFound = testCase "TargetNotFound" . runMockT $ do
+    inSequence
+      [ expect $ MakeAbsolute "one" |->
+          Left (userError "file not found: one")
+      ]
+    assertError "user error (file not found: one)" <=< Error.run $
+      run defaultOptions
         { optTargets = ["one"]
         }
-    err @=? "user error (file not found: one)"
 
 ------------------------------------------------------------------------------
 
 testPhatTarget :: TestTree
-testPhatTarget = testCase "PhatTarget" $ do
-    Left err <- runMockT . Error.run $ run defaultOptions
+testPhatTarget = testCase "PhatTarget" . runMockT $
+    assertError "-phat directory: one-phat" <=< Error.run $
+      run defaultOptions
         { optTargets = ["one-phat"]
         }
-    err @=? "-phat directory: one-phat"
 
 ------------------------------------------------------------------------------
 
 testTargetNotDirectory :: TestTree
-testTargetNotDirectory = testCase "TargetNotDirectory" $ do
-    Left err <- runMockT $ do
-      inSequence
-        [ expect $ MakeAbsolute "one" |-> Right "/a/b/one"
-        , expect $ GetFileStatus "/a/b/one" |->
-            Right (FileStatus 11 False 10000)
-        ]
-      Error.run $ run defaultOptions
+testTargetNotDirectory = testCase "TargetNotDirectory" . runMockT $ do
+    inSequence
+      [ expect $ MakeAbsolute "one" |-> Right "/a/b/one"
+      , expect $ GetFileStatus "/a/b/one" |->
+          Right (FileStatus 11 False 10000)
+      ]
+    assertError "not a directory: one" <=< Error.run $
+      run defaultOptions
         { optTargets = ["one"]
         }
-    err @=? "not a directory: one"
 
 ------------------------------------------------------------------------------
 
 testTargetMountPoint :: TestTree
-testTargetMountPoint = testCase "TargetMountPoint" $ do
-    Left err <- runMockT $ do
-      inSequence
-        [ expect $ MakeAbsolute "one" |-> Right "/a/one"
-        , expect $ GetFileStatus "/a/one" |->
-            Right (FileStatus 11 True 10000)
-        , expect $ GetFileStatus "/a" |-> Right (FileStatus 10 True 100)
-        ]
-      Error.run $ run defaultOptions
+testTargetMountPoint = testCase "TargetMountPoint" . runMockT $ do
+    inSequence
+      [ expect $ MakeAbsolute "one" |-> Right "/a/one"
+      , expect $ GetFileStatus "/a/one" |->
+          Right (FileStatus 11 True 10000)
+      , expect $ GetFileStatus "/a" |-> Right (FileStatus 10 True 100)
+      ]
+    assertError "mount point: one" <=< Error.run $
+      run defaultOptions
         { optTargets = ["one"]
         }
-    err @=? "mount point: one"
 
 ------------------------------------------------------------------------------
 
 testTargetPhatExists :: TestTree
-testTargetPhatExists = testCase "TargetPhatExists" $ do
-    Left err <- runMockT $ do
-      inSequence
-        [ expect $ MakeAbsolute "one" |-> Right "/a/b/one"
-        , expect $ GetFileStatus "/a/b/one" |->
-            Right (FileStatus 11 True 10000)
-        , expect $ GetFileStatus "/a/b" |-> Right (FileStatus 11 True 100)
-        , expect $ DoesPathExist "/a/b/one-phat" |-> Right True
-        ]
-      Error.run $ run defaultOptions
+testTargetPhatExists = testCase "TargetPhatExists" . runMockT $ do
+    inSequence
+      [ expect $ MakeAbsolute "one" |-> Right "/a/b/one"
+      , expect $ GetFileStatus "/a/b/one" |->
+          Right (FileStatus 11 True 10000)
+      , expect $ GetFileStatus "/a/b" |-> Right (FileStatus 11 True 100)
+      , expect $ DoesPathExist "/a/b/one-phat" |-> Right True
+      ]
+    assertError "already exists: one-phat" <=< Error.run $
+      run defaultOptions
         { optTargets = ["one"]
         }
-    err @=? "already exists: one-phat"
 
 ------------------------------------------------------------------------------
 
