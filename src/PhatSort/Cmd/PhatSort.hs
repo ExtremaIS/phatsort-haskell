@@ -29,7 +29,7 @@ import System.FilePath ((</>), takeDirectory)
 -- https://hackage.haskell.org/package/MonadRandom
 import Control.Monad.Random.Class (MonadRandom)
 
--- -- https://hackage.haskell.org/package/random-shuffle
+-- https://hackage.haskell.org/package/random-shuffle
 import System.Random.Shuffle (shuffleM)
 
 -- (phatsort)
