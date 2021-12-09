@@ -52,8 +52,7 @@ testCaseSensitive :: TestTree
 testCaseSensitive = testCase "CaseSensitive" . runMockT $ do
     inSequence
       [ expect $ MakeAbsolute "one" |-> Right "/a/b/one"
-      , expect $ GetFileStatus "/a/b/one" |->
-          Right (FileStatus 11 True 10000)
+      , expect $ GetFileStatus "/a/b/one" |-> Right (FileStatus 11 True 10000)
       , expect $ GetFileStatus "/a/b" |-> Right (FileStatus 11 True 100)
       , expect $ DoesPathExist "/a/b/one-phat" |-> Right False
       , expect $ RenameDirectory "/a/b/one" "/a/b/one-phat" |-> Right ()
@@ -86,8 +85,7 @@ testCaseSensitiveScript :: TestTree
 testCaseSensitiveScript = testCase "CaseSensitiveScript" . runMockT $ do
     inSequence
       [ expect $ MakeAbsolute "one" |-> Right "/a/b/one"
-      , expect $ GetFileStatus "/a/b/one" |->
-          Right (FileStatus 11 True 10000)
+      , expect $ GetFileStatus "/a/b/one" |-> Right (FileStatus 11 True 10000)
       , expect $ GetFileStatus "/a/b" |-> Right (FileStatus 11 True 100)
       , expect $ DoesPathExist "/a/b/one-phat" |-> Right False
       , expect $ PutStrLn "mv /a/b/one /a/b/one-phat" |-> ()
@@ -121,8 +119,7 @@ testCaseInsensitive :: TestTree
 testCaseInsensitive = testCase "CaseInsensitive" . runMockT $ do
     inSequence
       [ expect $ MakeAbsolute "one" |-> Right "/a/b/one"
-      , expect $ GetFileStatus "/a/b/one" |->
-          Right (FileStatus 11 True 10000)
+      , expect $ GetFileStatus "/a/b/one" |-> Right (FileStatus 11 True 10000)
       , expect $ GetFileStatus "/a/b" |-> Right (FileStatus 11 True 100)
       , expect $ DoesPathExist "/a/b/one-phat" |-> Right False
       , expect $ RenameDirectory "/a/b/one" "/a/b/one-phat" |-> Right ()
@@ -157,8 +154,7 @@ testCaseInsensitiveScript :: TestTree
 testCaseInsensitiveScript = testCase "CaseInsensitiveScript" . runMockT $ do
     inSequence
       [ expect $ MakeAbsolute "one" |-> Right "/a/b/one"
-      , expect $ GetFileStatus "/a/b/one" |->
-          Right (FileStatus 11 True 10000)
+      , expect $ GetFileStatus "/a/b/one" |-> Right (FileStatus 11 True 10000)
       , expect $ GetFileStatus "/a/b" |-> Right (FileStatus 11 True 100)
       , expect $ DoesPathExist "/a/b/one-phat" |-> Right False
       , expect $ PutStrLn "mv /a/b/one /a/b/one-phat" |-> ()
@@ -193,8 +189,7 @@ testFirstNone :: TestTree
 testFirstNone = testCase "FirstNone" . runMockT $ do
     inSequence
       [ expect $ MakeAbsolute "one" |-> Right "/a/b/one"
-      , expect $ GetFileStatus "/a/b/one" |->
-          Right (FileStatus 11 True 10000)
+      , expect $ GetFileStatus "/a/b/one" |-> Right (FileStatus 11 True 10000)
       , expect $ GetFileStatus "/a/b" |-> Right (FileStatus 11 True 100)
       , expect $ DoesPathExist "/a/b/one-phat" |-> Right False
       , expect $ RenameDirectory "/a/b/one" "/a/b/one-phat" |-> Right ()
@@ -241,8 +236,7 @@ testFirstNoneScript :: TestTree
 testFirstNoneScript = testCase "FirstNoneScript" . runMockT $ do
     inSequence
       [ expect $ MakeAbsolute "one" |-> Right "/a/b/one"
-      , expect $ GetFileStatus "/a/b/one" |->
-          Right (FileStatus 11 True 10000)
+      , expect $ GetFileStatus "/a/b/one" |-> Right (FileStatus 11 True 10000)
       , expect $ GetFileStatus "/a/b" |-> Right (FileStatus 11 True 100)
       , expect $ DoesPathExist "/a/b/one-phat" |-> Right False
       , expect $ PutStrLn "mv /a/b/one /a/b/one-phat" |-> ()
@@ -290,8 +284,7 @@ testFirstDirs :: TestTree
 testFirstDirs = testCase "FirstDirs" . runMockT$ do
     inSequence
       [ expect $ MakeAbsolute "one" |-> Right "/a/b/one"
-      , expect $ GetFileStatus "/a/b/one" |->
-          Right (FileStatus 11 True 10000)
+      , expect $ GetFileStatus "/a/b/one" |-> Right (FileStatus 11 True 10000)
       , expect $ GetFileStatus "/a/b" |-> Right (FileStatus 11 True 100)
       , expect $ DoesPathExist "/a/b/one-phat" |-> Right False
       , expect $ RenameDirectory "/a/b/one" "/a/b/one-phat" |-> Right ()
@@ -340,8 +333,7 @@ testFirstDirsScript :: TestTree
 testFirstDirsScript = testCase "FirstDirsScript" . runMockT $ do
     inSequence
       [ expect $ MakeAbsolute "one" |-> Right "/a/b/one"
-      , expect $ GetFileStatus "/a/b/one" |->
-          Right (FileStatus 11 True 10000)
+      , expect $ GetFileStatus "/a/b/one" |-> Right (FileStatus 11 True 10000)
       , expect $ GetFileStatus "/a/b" |-> Right (FileStatus 11 True 100)
       , expect $ DoesPathExist "/a/b/one-phat" |-> Right False
       , expect $ PutStrLn "mv /a/b/one /a/b/one-phat" |-> ()
@@ -390,8 +382,7 @@ testFirstFiles :: TestTree
 testFirstFiles = testCase "FirstFiles" . runMockT $ do
     inSequence
       [ expect $ MakeAbsolute "one" |-> Right "/a/b/one"
-      , expect $ GetFileStatus "/a/b/one" |->
-          Right (FileStatus 11 True 10000)
+      , expect $ GetFileStatus "/a/b/one" |-> Right (FileStatus 11 True 10000)
       , expect $ GetFileStatus "/a/b" |-> Right (FileStatus 11 True 100)
       , expect $ DoesPathExist "/a/b/one-phat" |-> Right False
       , expect $ RenameDirectory "/a/b/one" "/a/b/one-phat" |-> Right ()
@@ -440,8 +431,7 @@ testFirstFilesScript :: TestTree
 testFirstFilesScript = testCase "FirstFilesScript" . runMockT $ do
     inSequence
       [ expect $ MakeAbsolute "one" |-> Right "/a/b/one"
-      , expect $ GetFileStatus "/a/b/one" |->
-          Right (FileStatus 11 True 10000)
+      , expect $ GetFileStatus "/a/b/one" |-> Right (FileStatus 11 True 10000)
       , expect $ GetFileStatus "/a/b" |-> Right (FileStatus 11 True 100)
       , expect $ DoesPathExist "/a/b/one-phat" |-> Right False
       , expect $ PutStrLn "mv /a/b/one /a/b/one-phat" |-> ()
@@ -490,8 +480,7 @@ testNoSync :: TestTree
 testNoSync = testCase "NoSync" . runMockT $ do
     inSequence
       [ expect $ MakeAbsolute "one" |-> Right "/a/b/one"
-      , expect $ GetFileStatus "/a/b/one" |->
-          Right (FileStatus 11 True 10000)
+      , expect $ GetFileStatus "/a/b/one" |-> Right (FileStatus 11 True 10000)
       , expect $ GetFileStatus "/a/b" |-> Right (FileStatus 11 True 100)
       , expect $ DoesPathExist "/a/b/one-phat" |-> Right False
       , expect $ RenameDirectory "/a/b/one" "/a/b/one-phat" |-> Right ()
@@ -520,8 +509,7 @@ testNoSyncScript :: TestTree
 testNoSyncScript = testCase "NoSyncScript" . runMockT $ do
     inSequence
       [ expect $ MakeAbsolute "one" |-> Right "/a/b/one"
-      , expect $ GetFileStatus "/a/b/one" |->
-          Right (FileStatus 11 True 10000)
+      , expect $ GetFileStatus "/a/b/one" |-> Right (FileStatus 11 True 10000)
       , expect $ GetFileStatus "/a/b" |-> Right (FileStatus 11 True 100)
       , expect $ DoesPathExist "/a/b/one-phat" |-> Right False
       , expect $ PutStrLn "mv /a/b/one /a/b/one-phat" |-> ()
@@ -550,8 +538,7 @@ testOrderNameReverse :: TestTree
 testOrderNameReverse = testCase "OrderNameReverse" . runMockT $ do
     inSequence
       [ expect $ MakeAbsolute "one" |-> Right "/a/b/one"
-      , expect $ GetFileStatus "/a/b/one" |->
-          Right (FileStatus 11 True 10000)
+      , expect $ GetFileStatus "/a/b/one" |-> Right (FileStatus 11 True 10000)
       , expect $ GetFileStatus "/a/b" |-> Right (FileStatus 11 True 100)
       , expect $ DoesPathExist "/a/b/one-phat" |-> Right False
       , expect $ RenameDirectory "/a/b/one" "/a/b/one-phat" |-> Right ()
@@ -601,8 +588,7 @@ testOrderNameReverseScript :: TestTree
 testOrderNameReverseScript = testCase "OrderNameReverseScript" . runMockT $ do
     inSequence
       [ expect $ MakeAbsolute "one" |-> Right "/a/b/one"
-      , expect $ GetFileStatus "/a/b/one" |->
-          Right (FileStatus 11 True 10000)
+      , expect $ GetFileStatus "/a/b/one" |-> Right (FileStatus 11 True 10000)
       , expect $ GetFileStatus "/a/b" |-> Right (FileStatus 11 True 100)
       , expect $ DoesPathExist "/a/b/one-phat" |-> Right False
       , expect $ PutStrLn "mv /a/b/one /a/b/one-phat" |-> ()
@@ -652,8 +638,7 @@ testOrderTime :: TestTree
 testOrderTime = testCase "OrderTime" . runMockT $ do
     inSequence
       [ expect $ MakeAbsolute "one" |-> Right "/a/b/one"
-      , expect $ GetFileStatus "/a/b/one" |->
-          Right (FileStatus 11 True 10000)
+      , expect $ GetFileStatus "/a/b/one" |-> Right (FileStatus 11 True 10000)
       , expect $ GetFileStatus "/a/b" |-> Right (FileStatus 11 True 100)
       , expect $ DoesPathExist "/a/b/one-phat" |-> Right False
       , expect $ RenameDirectory "/a/b/one" "/a/b/one-phat" |-> Right ()
@@ -703,8 +688,7 @@ testOrderTimeScript :: TestTree
 testOrderTimeScript = testCase "OrderTimeScript" . runMockT $ do
     inSequence
       [ expect $ MakeAbsolute "one" |-> Right "/a/b/one"
-      , expect $ GetFileStatus "/a/b/one" |->
-          Right (FileStatus 11 True 10000)
+      , expect $ GetFileStatus "/a/b/one" |-> Right (FileStatus 11 True 10000)
       , expect $ GetFileStatus "/a/b" |-> Right (FileStatus 11 True 100)
       , expect $ DoesPathExist "/a/b/one-phat" |-> Right False
       , expect $ PutStrLn "mv /a/b/one /a/b/one-phat" |-> ()
@@ -754,8 +738,7 @@ testOrderTimeReverse :: TestTree
 testOrderTimeReverse = testCase "OrderTimeReverse" . runMockT $ do
     inSequence
       [ expect $ MakeAbsolute "one" |-> Right "/a/b/one"
-      , expect $ GetFileStatus "/a/b/one" |->
-          Right (FileStatus 11 True 10000)
+      , expect $ GetFileStatus "/a/b/one" |-> Right (FileStatus 11 True 10000)
       , expect $ GetFileStatus "/a/b" |-> Right (FileStatus 11 True 100)
       , expect $ DoesPathExist "/a/b/one-phat" |-> Right False
       , expect $ RenameDirectory "/a/b/one" "/a/b/one-phat" |-> Right ()
@@ -806,8 +789,7 @@ testOrderTimeReverseScript :: TestTree
 testOrderTimeReverseScript = testCase "OrderTimeReverseScript" . runMockT $ do
     inSequence
       [ expect $ MakeAbsolute "one" |-> Right "/a/b/one"
-      , expect $ GetFileStatus "/a/b/one" |->
-          Right (FileStatus 11 True 10000)
+      , expect $ GetFileStatus "/a/b/one" |-> Right (FileStatus 11 True 10000)
       , expect $ GetFileStatus "/a/b" |-> Right (FileStatus 11 True 100)
       , expect $ DoesPathExist "/a/b/one-phat" |-> Right False
       , expect $ PutStrLn "mv /a/b/one /a/b/one-phat" |-> ()
@@ -858,8 +840,7 @@ testOrderRandom :: TestTree
 testOrderRandom = testCase "OrderRandom" . runMockT $ do
     inSequence
       [ expect $ MakeAbsolute "one" |-> Right "/a/b/one"
-      , expect $ GetFileStatus "/a/b/one" |->
-          Right (FileStatus 11 True 10000)
+      , expect $ GetFileStatus "/a/b/one" |-> Right (FileStatus 11 True 10000)
       , expect $ GetFileStatus "/a/b" |-> Right (FileStatus 11 True 100)
       , expect $ DoesPathExist "/a/b/one-phat" |-> Right False
       , expect $ RenameDirectory "/a/b/one" "/a/b/one-phat" |-> Right ()
@@ -935,8 +916,7 @@ testOrderRandomScript :: TestTree
 testOrderRandomScript = testCase "OrderRandomScript" . runMockT $ do
     inSequence
       [ expect $ MakeAbsolute "one" |-> Right "/a/b/one"
-      , expect $ GetFileStatus "/a/b/one" |->
-          Right (FileStatus 11 True 10000)
+      , expect $ GetFileStatus "/a/b/one" |-> Right (FileStatus 11 True 10000)
       , expect $ GetFileStatus "/a/b" |-> Right (FileStatus 11 True 100)
       , expect $ DoesPathExist "/a/b/one-phat" |-> Right False
       , expect $ PutStrLn "mv /a/b/one /a/b/one-phat" |-> ()
@@ -1012,8 +992,7 @@ testVerbose :: TestTree
 testVerbose = testCase "Verbose" . runMockT $ do
     inSequence
       [ expect $ MakeAbsolute "one" |-> Right "/a/b/one"
-      , expect $ GetFileStatus "/a/b/one" |->
-          Right (FileStatus 11 True 10000)
+      , expect $ GetFileStatus "/a/b/one" |-> Right (FileStatus 11 True 10000)
       , expect $ GetFileStatus "/a/b" |-> Right (FileStatus 11 True 100)
       , expect $ DoesPathExist "/a/b/one-phat" |-> Right False
       , expect $ PutStrLn "one" |-> ()
@@ -1052,8 +1031,7 @@ testVerboseScript :: TestTree
 testVerboseScript = testCase "VerboseScript" . runMockT $ do
     inSequence
       [ expect $ MakeAbsolute "one" |-> Right "/a/b/one"
-      , expect $ GetFileStatus "/a/b/one" |->
-          Right (FileStatus 11 True 10000)
+      , expect $ GetFileStatus "/a/b/one" |-> Right (FileStatus 11 True 10000)
       , expect $ GetFileStatus "/a/b" |-> Right (FileStatus 11 True 100)
       , expect $ DoesPathExist "/a/b/one-phat" |-> Right False
       , expect $ PutStrLn "echo one" |-> ()
@@ -1092,13 +1070,11 @@ testMultipleTargets :: TestTree
 testMultipleTargets = testCase "MultipleTargets" . runMockT $ do
     inSequence
       [ expect $ MakeAbsolute "one" |-> Right "/a/b/one"
-      , expect $ GetFileStatus "/a/b/one" |->
-          Right (FileStatus 11 True 10000)
+      , expect $ GetFileStatus "/a/b/one" |-> Right (FileStatus 11 True 10000)
       , expect $ GetFileStatus "/a/b" |-> Right (FileStatus 11 True 100)
       , expect $ DoesPathExist "/a/b/one-phat" |-> Right False
       , expect $ MakeAbsolute "two" |-> Right "/a/b/two"
-      , expect $ GetFileStatus "/a/b/two" |->
-          Right (FileStatus 11 True 10000)
+      , expect $ GetFileStatus "/a/b/two" |-> Right (FileStatus 11 True 10000)
       , expect $ GetFileStatus "/a/b" |-> Right (FileStatus 11 True 100)
       , expect $ DoesPathExist "/a/b/two-phat" |-> Right False
       , expect $ RenameDirectory "/a/b/one" "/a/b/one-phat" |-> Right ()
@@ -1156,13 +1132,11 @@ testMultipleTargetsScript :: TestTree
 testMultipleTargetsScript = testCase "MultipleTargetsScript" . runMockT $ do
     inSequence
       [ expect $ MakeAbsolute "one" |-> Right "/a/b/one"
-      , expect $ GetFileStatus "/a/b/one" |->
-          Right (FileStatus 11 True 10000)
+      , expect $ GetFileStatus "/a/b/one" |-> Right (FileStatus 11 True 10000)
       , expect $ GetFileStatus "/a/b" |-> Right (FileStatus 11 True 100)
       , expect $ DoesPathExist "/a/b/one-phat" |-> Right False
       , expect $ MakeAbsolute "two" |-> Right "/a/b/two"
-      , expect $ GetFileStatus "/a/b/two" |->
-          Right (FileStatus 11 True 10000)
+      , expect $ GetFileStatus "/a/b/two" |-> Right (FileStatus 11 True 10000)
       , expect $ GetFileStatus "/a/b" |-> Right (FileStatus 11 True 100)
       , expect $ DoesPathExist "/a/b/two-phat" |-> Right False
       , expect $ PutStrLn "mv /a/b/one /a/b/one-phat" |-> ()
