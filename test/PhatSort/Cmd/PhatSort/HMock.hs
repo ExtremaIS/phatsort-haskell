@@ -2,6 +2,7 @@ module PhatSort.Cmd.PhatSort.HMock (tests) where
 
 -- https://hackage.haskell.org/package/base
 import Control.Monad ((<=<))
+import qualified Data.List.NonEmpty as NonEmpty
 
 -- https://hackage.haskell.org/package/HMock
 import Test.HMock ((|->), expect, inAnyOrder, inSequence, runMockT)
@@ -42,10 +43,8 @@ defaultOptions = Options
     , optReverse = False
     , optScript  = False
     , optVerbose = False
-    , optTargets = []
+    , optTargets = NonEmpty.fromList ["one"]
     }
-
--- TODO NonEmpty
 
 ------------------------------------------------------------------------------
 
@@ -82,8 +81,6 @@ testCaseSensitive = testCase "CaseSensitive" . runMockT $ do
       , expect $ Sync |-> ()
       ]
     assertSuccess <=< Error.run $ run defaultOptions
-      { optTargets = ["one"]
-      }
 
 testCaseSensitiveScript :: TestTree
 testCaseSensitiveScript = testCase "CaseSensitiveScript" . runMockT $ do
@@ -115,8 +112,7 @@ testCaseSensitiveScript = testCase "CaseSensitiveScript" . runMockT $ do
       , expect $ PutStrLn "sync" |-> ()
       ]
     assertSuccess <=< Error.run $ run defaultOptions
-      { optScript  = True
-      , optTargets = ["one"]
+      { optScript = True
       }
 
 ------------------------------------------------------------------------------
@@ -154,8 +150,7 @@ testCaseInsensitive = testCase "CaseInsensitive" . runMockT $ do
       , expect $ Sync |-> ()
       ]
     assertSuccess <=< Error.run $ run defaultOptions
-      { optCase    = CaseInsensitive
-      , optTargets = ["one"]
+      { optCase = CaseInsensitive
       }
 
 testCaseInsensitiveScript :: TestTree
@@ -188,9 +183,8 @@ testCaseInsensitiveScript = testCase "CaseInsensitiveScript" . runMockT $ do
       , expect $ PutStrLn "sync" |-> ()
       ]
     assertSuccess <=< Error.run $ run defaultOptions
-      { optCase    = CaseInsensitive
-      , optScript  = True
-      , optTargets = ["one"]
+      { optCase   = CaseInsensitive
+      , optScript = True
       }
 
 ------------------------------------------------------------------------------
@@ -242,8 +236,6 @@ testFirstNone = testCase "FirstNone" . runMockT $ do
       , expect $ Sync |-> ()
       ]
     assertSuccess <=< Error.run $ run defaultOptions
-      { optTargets = ["one"]
-      }
 
 testFirstNoneScript :: TestTree
 testFirstNoneScript = testCase "FirstNoneScript" . runMockT $ do
@@ -289,8 +281,7 @@ testFirstNoneScript = testCase "FirstNoneScript" . runMockT $ do
       , expect $ PutStrLn "sync" |-> ()
       ]
     assertSuccess <=< Error.run $ run defaultOptions
-      { optScript  = True
-      , optTargets = ["one"]
+      { optScript = True
       }
 
 ------------------------------------------------------------------------------
@@ -342,8 +333,7 @@ testFirstDirs = testCase "FirstDirs" . runMockT$ do
       , expect $ Sync |-> ()
       ]
     assertSuccess <=< Error.run $ run defaultOptions
-      { optFirst   = FirstDirs
-      , optTargets = ["one"]
+      { optFirst = FirstDirs
       }
 
 testFirstDirsScript :: TestTree
@@ -390,9 +380,8 @@ testFirstDirsScript = testCase "FirstDirsScript" . runMockT $ do
       , expect $ PutStrLn "sync" |-> ()
       ]
     assertSuccess <=< Error.run $ run defaultOptions
-      { optFirst   = FirstDirs
-      , optScript  = True
-      , optTargets = ["one"]
+      { optFirst  = FirstDirs
+      , optScript = True
       }
 
 ------------------------------------------------------------------------------
@@ -444,8 +433,7 @@ testFirstFiles = testCase "FirstFiles" . runMockT $ do
       , expect $ Sync |-> ()
       ]
     assertSuccess <=< Error.run $ run defaultOptions
-      { optFirst   = FirstFiles
-      , optTargets = ["one"]
+      { optFirst = FirstFiles
       }
 
 testFirstFilesScript :: TestTree
@@ -492,9 +480,8 @@ testFirstFilesScript = testCase "FirstFilesScript" . runMockT $ do
       , expect $ PutStrLn "sync" |-> ()
       ]
     assertSuccess <=< Error.run $ run defaultOptions
-      { optFirst   = FirstFiles
-      , optScript  = True
-      , optTargets = ["one"]
+      { optFirst  = FirstFiles
+      , optScript = True
       }
 
 ------------------------------------------------------------------------------
@@ -526,8 +513,7 @@ testNoSync = testCase "NoSync" . runMockT $ do
       , expect $ RemoveDirectory "/a/b/one-phat" |-> Right ()
       ]
     assertSuccess <=< Error.run $ run defaultOptions
-      { optSync    = False
-      , optTargets = ["one"]
+      { optSync = False
       }
 
 testNoSyncScript :: TestTree
@@ -554,9 +540,8 @@ testNoSyncScript = testCase "NoSyncScript" . runMockT $ do
       , expect $ PutStrLn "rmdir /a/b/one-phat" |-> ()
       ]
     assertSuccess <=< Error.run $ run defaultOptions
-      { optSync    = False
-      , optScript  = True
-      , optTargets = ["one"]
+      { optSync   = False
+      , optScript = True
       }
 
 ------------------------------------------------------------------------------
@@ -610,7 +595,6 @@ testOrderNameReverse = testCase "OrderNameReverse" . runMockT $ do
     assertSuccess <=< Error.run $ run defaultOptions
       { optFirst   = FirstDirs
       , optReverse = True
-      , optTargets = ["one"]
       }
 
 testOrderNameReverseScript :: TestTree
@@ -660,7 +644,6 @@ testOrderNameReverseScript = testCase "OrderNameReverseScript" . runMockT $ do
       { optFirst   = FirstDirs
       , optReverse = True
       , optScript  = True
-      , optTargets = ["one"]
       }
 
 ------------------------------------------------------------------------------
@@ -712,9 +695,8 @@ testOrderTime = testCase "OrderTime" . runMockT $ do
       , expect $ Sync |-> ()
       ]
     assertSuccess <=< Error.run $ run defaultOptions
-      { optFirst   = FirstDirs
-      , optOrder   = OrderTime
-      , optTargets = ["one"]
+      { optFirst = FirstDirs
+      , optOrder = OrderTime
       }
 
 testOrderTimeScript :: TestTree
@@ -761,10 +743,9 @@ testOrderTimeScript = testCase "OrderTimeScript" . runMockT $ do
       , expect $ PutStrLn "sync" |-> ()
       ]
     assertSuccess <=< Error.run $ run defaultOptions
-      { optFirst   = FirstDirs
-      , optOrder   = OrderTime
-      , optScript  = True
-      , optTargets = ["one"]
+      { optFirst  = FirstDirs
+      , optOrder  = OrderTime
+      , optScript = True
       }
 
 ------------------------------------------------------------------------------
@@ -819,7 +800,6 @@ testOrderTimeReverse = testCase "OrderTimeReverse" . runMockT $ do
       { optFirst   = FirstDirs
       , optOrder   = OrderTime
       , optReverse = True
-      , optTargets = ["one"]
       }
 
 testOrderTimeReverseScript :: TestTree
@@ -870,7 +850,6 @@ testOrderTimeReverseScript = testCase "OrderTimeReverseScript" . runMockT $ do
       , optOrder   = OrderTime
       , optReverse = True
       , optScript  = True
-      , optTargets = ["one"]
       }
 
 ------------------------------------------------------------------------------
@@ -948,9 +927,8 @@ testOrderRandom = testCase "OrderRandom" . runMockT $ do
       , expect $ Sync |-> ()
       ]
     assertSuccess <=< Error.run $ run defaultOptions
-      { optFirst   = FirstDirs
-      , optOrder   = OrderRandom
-      , optTargets = ["one"]
+      { optFirst = FirstDirs
+      , optOrder = OrderRandom
       }
 
 testOrderRandomScript :: TestTree
@@ -1023,10 +1001,9 @@ testOrderRandomScript = testCase "OrderRandomScript" . runMockT $ do
       , expect $ PutStrLn "sync" |-> ()
       ]
     assertSuccess <=< Error.run $ run defaultOptions
-      { optFirst   = FirstDirs
-      , optOrder   = OrderRandom
-      , optScript  = True
-      , optTargets = ["one"]
+      { optFirst  = FirstDirs
+      , optOrder  = OrderRandom
+      , optScript = True
       }
 
 ------------------------------------------------------------------------------
@@ -1069,7 +1046,6 @@ testVerbose = testCase "Verbose" . runMockT $ do
       ]
     assertSuccess <=< Error.run $ run defaultOptions
       { optVerbose = True
-      , optTargets = ["one"]
       }
 
 testVerboseScript :: TestTree
@@ -1108,7 +1084,6 @@ testVerboseScript = testCase "VerboseScript" . runMockT $ do
     assertSuccess <=< Error.run $ run defaultOptions
       { optScript  = True
       , optVerbose = True
-      , optTargets = ["one"]
       }
 
 ------------------------------------------------------------------------------
@@ -1174,7 +1149,7 @@ testMultipleTargets = testCase "MultipleTargets" . runMockT $ do
       , expect $ Sync |-> ()
       ]
     assertSuccess <=< Error.run $ run defaultOptions
-      { optTargets = ["one", "two"]
+      { optTargets = NonEmpty.fromList ["one", "two"]
       }
 
 testMultipleTargetsScript :: TestTree
@@ -1233,7 +1208,7 @@ testMultipleTargetsScript = testCase "MultipleTargetsScript" . runMockT $ do
       ]
     assertSuccess <=< Error.run $ run defaultOptions
       { optScript  = True
-      , optTargets = ["one", "two"]
+      , optTargets = NonEmpty.fromList ["one", "two"]
       }
 
 ------------------------------------------------------------------------------
@@ -1246,8 +1221,6 @@ testTargetNotFound = testCase "TargetNotFound" . runMockT $ do
       ]
     assertError "user error (file not found: one)" <=< Error.run $
       run defaultOptions
-        { optTargets = ["one"]
-        }
 
 ------------------------------------------------------------------------------
 
@@ -1255,7 +1228,7 @@ testPhatTarget :: TestTree
 testPhatTarget = testCase "PhatTarget" . runMockT $
     assertError "-phat directory: one-phat" <=< Error.run $
       run defaultOptions
-        { optTargets = ["one-phat"]
+        { optTargets = NonEmpty.fromList ["one-phat"]
         }
 
 ------------------------------------------------------------------------------
@@ -1267,10 +1240,7 @@ testTargetNotDirectory = testCase "TargetNotDirectory" . runMockT $ do
       , expect $ GetFileStatus "/a/b/one" |->
           Right (FileStatus 11 False 10000)
       ]
-    assertError "not a directory: one" <=< Error.run $
-      run defaultOptions
-        { optTargets = ["one"]
-        }
+    assertError "not a directory: one" <=< Error.run $ run defaultOptions
 
 ------------------------------------------------------------------------------
 
@@ -1282,10 +1252,7 @@ testTargetMountPoint = testCase "TargetMountPoint" . runMockT $ do
           Right (FileStatus 11 True 10000)
       , expect $ GetFileStatus "/a" |-> Right (FileStatus 10 True 100)
       ]
-    assertError "mount point: one" <=< Error.run $
-      run defaultOptions
-        { optTargets = ["one"]
-        }
+    assertError "mount point: one" <=< Error.run $ run defaultOptions
 
 ------------------------------------------------------------------------------
 
@@ -1298,10 +1265,7 @@ testTargetPhatExists = testCase "TargetPhatExists" . runMockT $ do
       , expect $ GetFileStatus "/a/b" |-> Right (FileStatus 11 True 100)
       , expect $ DoesPathExist "/a/b/one-phat" |-> Right True
       ]
-    assertError "already exists: one-phat" <=< Error.run $
-      run defaultOptions
-        { optTargets = ["one"]
-        }
+    assertError "already exists: one-phat" <=< Error.run $ run defaultOptions
 
 ------------------------------------------------------------------------------
 
@@ -1500,7 +1464,7 @@ testLarge = testCase "Large" . runMockT $ do
       ]
     assertSuccess <=< Error.run $ run defaultOptions
       { optSync    = False
-      , optTargets = ["c", "d"]
+      , optTargets = NonEmpty.fromList ["c", "d"]
       }
 
 testLargeScript :: TestTree
@@ -1679,7 +1643,7 @@ testLargeScript = testCase "LargeScript" . runMockT $ do
     assertSuccess <=< Error.run $ run defaultOptions
       { optSync    = False
       , optScript  = True
-      , optTargets = ["c", "d"]
+      , optTargets = NonEmpty.fromList ["c", "d"]
       }
 
 ------------------------------------------------------------------------------

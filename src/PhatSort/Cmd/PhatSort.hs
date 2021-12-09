@@ -21,6 +21,8 @@ module PhatSort.Cmd.PhatSort
 import Control.Monad (forM, forM_, unless, when)
 import Data.Char (toLower)
 import Data.List (dropWhileEnd, isSuffixOf, partition, sortBy)
+import qualified Data.List.NonEmpty as NonEmpty
+import Data.List.NonEmpty (NonEmpty)
 import Data.Ord (comparing)
 
 -- https://hackage.haskell.org/package/filepath
@@ -61,7 +63,7 @@ data Options
     , optReverse :: !Bool
     , optScript  :: !Bool
     , optVerbose :: !Bool
-    , optTargets :: ![FilePath]
+    , optTargets :: !(NonEmpty FilePath)
     }
   deriving Show
 
@@ -81,7 +83,7 @@ run
   => Options
   -> ErrorT m ()
 run Options{..} = do
-    targets <- mapM getTarget optTargets
+    targets <- mapM getTarget $ NonEmpty.toList optTargets
     forM_ targets $ \Target{..} -> do
       putProgress targetArgPath
       mvDir targetDstPath targetSrcPath >> sync

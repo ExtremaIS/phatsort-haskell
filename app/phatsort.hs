@@ -10,6 +10,8 @@ module Main (main) where
 
 -- https://hackage.haskell.org/package/base
 import Control.Applicative (some)
+import qualified Data.List.NonEmpty as NonEmpty
+import Data.List.NonEmpty (NonEmpty)
 import System.Exit (ExitCode(ExitFailure), exitWith)
 import System.IO (hPutStrLn, stderr)
 
@@ -42,8 +44,8 @@ options = Options
 
 ------------------------------------------------------------------------------
 
-targetArguments :: OA.Parser [FilePath]
-targetArguments = some . OA.strArgument $ mconcat
+targetArguments :: OA.Parser (NonEmpty FilePath)
+targetArguments = fmap NonEmpty.fromList . some . OA.strArgument $ mconcat
     [ OA.metavar "TARGET ..."
     , OA.help "target directories"
     ]
