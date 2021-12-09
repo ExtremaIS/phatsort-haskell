@@ -1190,7 +1190,8 @@ testMultipleTargetsScript = testCase "MultipleTargetsScript" . runMockT $ do
 testTargetNotFound :: TestTree
 testTargetNotFound = testCase "TargetNotFound" . runMockT $ do
     inSequence
-      [ expect $ MakeAbsolute "one" |->
+      [ expect $ MakeAbsolute "one" |-> Right "/a/b/one"
+      , expect $ GetFileStatus "/a/b/one" |->
           Left (userError "file not found: one")
       ]
     assertError "user error (file not found: one)" <=< Error.run $
