@@ -43,8 +43,7 @@ so far.
 PhatSort also (optionally) forces the filesystem buffers to be written to the
 storage media after each change.  This helps avoid write failures when using
 devices that have problems with writing large amounts of data.  Note that the
-`seqcp` utility helps with this issue even on non-FAT filesystems.  For
-example, some Android devices mounted using MTP have this issue.
+`seqcp` utility helps with this issue even on non-FAT filesystems.
 
 ## Requirements
 
