@@ -28,6 +28,7 @@ following conventions:
 
 ### Breaking
 
+* Add `seqcp`
 * Check that each target directory is not a mount point
 * Call `sync` system call via FFI instead of running the `sync` command
 

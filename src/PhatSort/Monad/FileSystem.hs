@@ -32,6 +32,12 @@ import qualified System.PosixCompat.Files as Files
 
 -- | Filesystem I/O
 class Monad m => MonadFileSystem m where
+  -- | Copy a file
+  copyFile
+    :: FilePath  -- ^ source
+    -> FilePath  -- ^ destination
+    -> m (Either IOError ())
+
   -- | Create a directory
   createDirectory :: FilePath -> m (Either IOError ())
 
@@ -63,6 +69,9 @@ class Monad m => MonadFileSystem m where
     -> m (Either IOError ())
 
 instance MonadFileSystem IO where
+  copyFile = (tryIOError .) . Dir.copyFile
+  {-# INLINE copyFile #-}
+
   createDirectory = tryIOError . Dir.createDirectory
   {-# INLINE createDirectory #-}
 
@@ -88,6 +97,9 @@ instance MonadFileSystem IO where
   {-# INLINE renameFile #-}
 
 instance MonadFileSystem m => MonadFileSystem (ExceptT e m) where
+  copyFile = (lift .) . copyFile
+  {-# INLINE copyFile #-}
+
   createDirectory = lift . createDirectory
   {-# INLINE createDirectory #-}
 

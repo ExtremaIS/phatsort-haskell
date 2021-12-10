@@ -43,6 +43,7 @@ library
   exposed-modules:
       PhatSort
     , PhatSort.Cmd.PhatSort
+    , PhatSort.Cmd.SeqCp
     , PhatSort.Monad.FileSystem
     , PhatSort.Monad.Stdio
     , PhatSort.Monad.Sync
@@ -87,6 +88,23 @@ executable phatsort
   else
     ghc-options: -Wall
 
+executable seqcp
+  hs-source-dirs: app
+  main-is: seqcp.hs
+  other-modules:
+      LibOA
+    , Options
+  build-depends:
+      ansi-wl-pprint >=0.6 && <0.7
+    , base
+    , optparse-applicative >=0.14 && <0.17
+    , phatsort
+  default-language: Haskell2010
+  if flag(write-hie)
+    ghc-options: -Wall -fwrite-ide-info -hiedir=.hie
+  else
+    ghc-options: -Wall
+
 test-suite phatsort-test
   type: exitcode-stdio-1.0
   hs-source-dirs: test
@@ -101,6 +119,7 @@ test-suite phatsort-test
   if impl(ghc >= 8.6.1)
     other-modules:
         PhatSort.Cmd.PhatSort.HMock
+      , PhatSort.Cmd.SeqCp.HMock
       , TestLib
     build-depends:
         HMock
