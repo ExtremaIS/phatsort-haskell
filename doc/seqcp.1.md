@@ -67,7 +67,7 @@ Note that directories are copied recursively.
 # ARGUMENTS
 
 *SOURCE*
-:   source direcotry or file
+:   source directory or file
 
 *DESTINATION*
 :   destination directory
