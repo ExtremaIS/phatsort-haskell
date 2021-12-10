@@ -20,13 +20,13 @@ module PhatSort.Cmd.SeqCp
 -- https://hackage.haskell.org/package/base
 import Control.Monad (forM, forM_, unless, when)
 import Data.Char (toLower)
-import Data.List (dropWhileEnd, partition, sortBy)
+import Data.List (dropWhileEnd, isPrefixOf, partition, sortBy)
 import qualified Data.List.NonEmpty as NonEmpty
 import Data.List.NonEmpty (NonEmpty)
 import Data.Ord (comparing)
 
 -- https://hackage.haskell.org/package/filepath
-import System.FilePath ((</>), takeFileName)
+import System.FilePath ((</>), splitDirectories, takeFileName)
 
 -- https://hackage.haskell.org/package/MonadRandom
 import Control.Monad.Random.Class (MonadRandom)
@@ -171,12 +171,17 @@ getArgTargets sources destDir = do
     destStatus <- Error.errorTE $ FS.getFileStatus destPath
     unless (FS.isDirectory destStatus) .
       Error.throw $ "not a directory: " ++ destDir
+    let destDirs = splitDirectories destPath
     forM (NonEmpty.toList sources) $ \targetArgPath -> do
       targetSrcPath <- Error.errorTE .
         FS.makeAbsolute $ dropWhileEnd (== '/') targetArgPath
       let targetName = takeFileName targetSrcPath
           targetDstPath = destPath </> targetName
       targetStatus <- Error.errorTE $ FS.getFileStatus targetSrcPath
+      when (FS.isDirectory targetStatus) .
+        when (splitDirectories targetSrcPath `isPrefixOf` destDirs) $
+          Error.throw $
+            "source directory above target directory: " ++ targetArgPath
       exists <- Error.errorTE $ FS.doesPathExist targetDstPath
       when exists . Error.throw $ "already exists: " ++ targetDstPath
       pure Target{..}

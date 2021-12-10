@@ -1841,6 +1841,31 @@ testSourceNotFound = testCase "SourceNotFound" . runMockT $ do
 
 ------------------------------------------------------------------------------
 
+testSourceAbove :: TestTree
+testSourceAbove = testCase "SourceAbove" . runMockT $ do
+    inSequence
+      [ expect $ MakeAbsolute "b/c" |-> Right "/a/b/c"
+      , expect $ GetFileStatus "/a/b/c" |-> Right (FileStatus 11 True 1000)
+      , expect $ MakeAbsolute "e" |-> Right "/a/e"
+      , expect $ GetFileStatus "/a/e" |-> Right (FileStatus 11 True 2000)
+      , expect $ DoesPathExist "/a/b/c/e" |-> Right False
+      , expect $ MakeAbsolute "b/d" |-> Right "/a/b/d"
+      , expect $ GetFileStatus "/a/b/d" |-> Right (FileStatus 11 True 3000)
+      , expect $ DoesPathExist "/a/b/c/d" |-> Right False
+      , expect $ MakeAbsolute "b0" |-> Right "/a/b0"
+      , expect $ GetFileStatus "/a/b0" |-> Right (FileStatus 11 True 4000)
+      , expect $ DoesPathExist "/a/b/c/b0" |-> Right False
+      , expect $ MakeAbsolute "b" |-> Right "/a/b"
+      , expect $ GetFileStatus "/a/b" |-> Right (FileStatus 11 True 5000)
+      ]
+    assertError "source directory above target directory: b" <=<
+      Error.run $ run defaultOptions
+        { optSources     = NonEmpty.fromList ["e", "b/d", "b0", "b", "f"]
+        , optDestination = "b/c"
+        }
+
+------------------------------------------------------------------------------
+
 testSourceExists :: TestTree
 testSourceExists = testCase "SourceExists" . runMockT $ do
     inSequence
@@ -2205,6 +2230,7 @@ tests = testGroup "seqcp:HMock"
     , testDestinationNotFound
     , testDestinationNotDirectory
     , testSourceNotFound
+    , testSourceAbove
     , testSourceExists
     , testLarge
     , testLargeScript
