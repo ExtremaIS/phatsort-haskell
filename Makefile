@@ -2,7 +2,6 @@
 # Project configuration
 
 PACKAGE    := phatsort
-BINARY     := $(PACKAGE)
 CABAL_FILE := $(PACKAGE).cabal
 PROJECT    := $(PACKAGE)-haskell
 
@@ -31,6 +30,11 @@ MAKEFLAGS += --no-builtin-rules
 MAKEFLAGS += --warn-undefined-variables
 
 .DEFAULT_GOAL := build
+
+CABAL_PROJECT_ARGS :=
+ifneq ($(origin PROJECT_FILE), undefined)
+  CABAL_PROJECT_ARGS := "--project-file=$(PROJECT_FILE)"
+endif
 
 NIX_PATH_ARGS :=
 ifneq ($(origin STACK_NIX_PATH), undefined)
@@ -77,7 +81,7 @@ endef
 build: hr
 build: # build package *
 ifeq ($(MODE), cabal)
-> @cabal v2-build
+> @cabal v2-build $(CABAL_PROJECT_ARGS)
 else
 > @stack build $(RESOLVER_ARGS) $(STACK_YAML_ARGS) $(NIX_PATH_ARGS)
 endif
@@ -117,9 +121,18 @@ deb: # build .deb package for VERSION in a Debian container
 >   -e DEBFULLNAME="$(MAINTAINER_NAME)" \
 >   -e DEBEMAIL="$(MAINTAINER_EMAIL)" \
 >   -v $(PWD)/build:/host \
->   extremais/pkg-debian-stack:buster \
+>   extremais/pkg-debian-stack:bullseye \
 >   /home/docker/bin/make-deb.sh "$(SRC)"
 .PHONY: deb
+
+doc-api: hr
+doc-api: # build API documentation *
+ifeq ($(MODE), cabal)
+> @cabal v2-haddock $(CABAL_PROJECT_ARGS)
+else
+> @stack haddock $(RESOLVER_ARGS) $(STACK_YAML_ARGS) $(NIX_PATH_ARGS)
+endif
+.PHONY: doc-api
 
 grep: # grep all non-hidden files for expression E
 > $(eval E:= "")
@@ -171,9 +184,19 @@ install: # install everything to PREFIX
 
 install-bin: build
 install-bin: # install executable to PREFIX/bin
-> $(eval LIROOT := $(shell stack path --local-install-root))
 > @mkdir -p "$(bindir)"
-> @install -m 0755 "$(LIROOT)/bin/$(BINARY)" "$(bindir)/$(BINARY)"
+ifeq ($(MODE), cabal)
+> @install -m 0755 \
+>   "$(shell cabal list-bin $(CABAL_PROJECT_ARGS) phatsort)" \
+>   "$(bindir)/phatsort"
+> @install -m 0755 \
+>   "$(shell cabal list-bin $(CABAL_PROJECT_ARGS) seqcp)" \
+>   "$(bindir)/seqcp"
+else
+> $(eval LIROOT := $(shell stack path --local-install-root))
+> @install -m 0755 "$(LIROOT)/bin/phatsort" "$(bindir)/phatsort"
+> @install -m 0755 "$(LIROOT)/bin/seqcp" "$(bindir)/seqcp"
+endif
 .PHONY: install-bin
 
 install-doc: # install documentation to PREFIX/share/doc/phatsort-haskell
@@ -185,17 +208,22 @@ install-doc: # install documentation to PREFIX/share/doc/phatsort-haskell
 
 install-man: # install manual to PREFIX/share/man/man1
 > @mkdir -p "$(man1dir)"
-> @install -m 0644 -T <(gzip -c doc/$(BINARY).1) "$(man1dir)/$(BINARY).1.gz"
+> @install -m 0644 -T <(gzip -c doc/phatsort.1) "$(man1dir)/phatsort.1.gz"
+> @install -m 0644 -T <(gzip -c doc/seqcp.1) "$(man1dir)/seqcp.1.gz"
 .PHONY: install-man
 
 man: # build man page
 > $(eval VERSION := $(shell \
     grep '^version:' $(CABAL_FILE) | sed 's/^version: *//'))
 > $(eval DATE := $(shell date --rfc-3339=date))
-> @pandoc -s -t man -o doc/$(BINARY).1 \
->   --variable header="$(BINARY) Manual" \
+> @pandoc -s -t man -o doc/phatsort.1 \
+>   --variable header="phatsort Manual" \
 >   --variable footer="$(PROJECT) $(VERSION) ($(DATE))" \
->   doc/$(BINARY).1.md
+>   doc/phatsort.1.md
+> @pandoc -s -t man -o doc/seqcp.1 \
+>   --variable header="seqcp Manual" \
+>   --variable footer="$(PROJECT) $(VERSION) ($(DATE))" \
+>   doc/seqcp.1.md
 .PHONY: man
 
 recent: # show N most recently modified files
@@ -207,7 +235,7 @@ recent: # show N most recently modified files
 
 repl: # enter a REPL *
 ifeq ($(MODE), cabal)
-> @cabal repl
+> @cabal repl $(CABAL_PROJECT_ARGS)
 else
 > @stack exec ghci $(RESOLVER_ARGS) $(STACK_YAML_ARGS) $(NIX_PATH_ARGS)
 endif
@@ -285,8 +313,9 @@ test: # run tests, optionally for pattern P *
 ifeq ($(MODE), cabal)
 > @test -z "$(P)" \
 >   && cabal v2-test --enable-tests --test-show-details=always \
+>       $(CABAL_PROJECT_ARGS) \
 >   || cabal v2-test --enable-tests --test-show-details=always \
->       --test-option '--patern=$(P)'
+>       --test-option '--patern=$(P)' $(CABAL_PROJECT_ARGS)
 else
 > @test -z "$(P)" \
 >   && stack test $(RESOLVER_ARGS) $(STACK_YAML_ARGS) $(NIX_PATH_ARGS) \
@@ -304,10 +333,12 @@ test-all: # run tests for all configured Stackage releases
 > @make test CONFIG=stack-8.6.5.yaml
 > @command -v hr >/dev/null 2>&1 && hr "stack-8.8.4.yaml" || true
 > @make test CONFIG=stack-8.8.4.yaml
-> @command -v hr >/dev/null 2>&1 && hr "stack-8.10.4.yaml" || true
-> @make test CONFIG=stack-8.10.4.yaml
+> @command -v hr >/dev/null 2>&1 && hr "stack-8.10.7.yaml" || true
+> @make test CONFIG=stack-8.10.7.yaml
 > @command -v hr >/dev/null 2>&1 && hr "stack-9.0.1.yaml" || true
 > @make test CONFIG=stack-9.0.1.yaml
+> @command -v hr >/dev/null 2>&1 && hr "stack-9.2.1.yaml" || true
+> @make test CONFIG=stack-9.2.1.yaml
 .PHONY: test-all
 
 test-nightly: # run tests for the latest Stackage nightly release

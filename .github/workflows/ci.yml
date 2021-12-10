@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        ghc: ['8.2.2', '8.4.4', '8.6.5', '8.8.4', '8.10.4', '9.0.1']
+        ghc: ['8.2.2', '8.4.4', '8.6.5', '8.8.4', '8.10.7', '9.0.1', '9.2.1']
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -23,16 +23,16 @@ jobs:
           ghc-version: ${{ matrix.ghc }}
           cabal-version: latest
       - name: Build
-        run: cabal new-build --enable-tests --enable-benchmarks
+        run: cabal new-build --enable-tests --enable-benchmarks --project-file=cabal-${{ matrix.ghc }}.project
       - name: Test
-        run: cabal new-test --enable-tests
+        run: cabal new-test --enable-tests --project-file=cabal-${{ matrix.ghc }}.project
 
   stack:
     name: "Stack: GHC ${{ matrix.ghc }}"
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        ghc: ['8.2.2', '8.4.4', '8.6.5', '8.8.4', '8.10.4']
+        ghc: ['8.2.2', '8.4.4', '8.6.5', '8.8.4', '8.10.7']
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -72,6 +72,6 @@ jobs:
           ghc-version: 8.2.2
           cabal-version: ${{ matrix.cabal }}
       - name: Build
-        run: cabal new-build --enable-tests --enable-benchmarks
+        run: cabal new-build --enable-tests --enable-benchmarks --project-file=cabal-8.2.2.project
       - name: Test
-        run: cabal new-test --enable-tests
+        run: cabal new-test --enable-tests --project-file=cabal-8.2.2.project

@@ -24,6 +24,18 @@ following conventions:
 
 [KaC]: <https://keepachangelog.com/en/1.0.0/>
 
+## 0.5.0.0 (2021-12-10)
+
+### Breaking
+
+* Add `seqcp`
+* Check that each target directory is not a mount point
+* Call `sync` system call via FFI instead of running the `sync` command
+
+### Non-Breaking
+
+* Add tests using mocking
+
 ## 0.4.0.0 (2021-06-25)
 
 ### Breaking

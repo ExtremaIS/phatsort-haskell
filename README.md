@@ -19,37 +19,44 @@
 
 ## Overview
 
-PhatSort is a utility that sorts files and directories on a FAT filesystem.
+The PhatSort project provides two command-line utilities for sorting files
+and directories on FAT filesystems.  The `phatsort` utility sorts files and
+directories that are already on the filesystem.  The `seqcp` utility copies
+files and directories to the filesystem in sorted order.
 
 There are many MP3 players that allow you to mount the device as external
 storage and manage the media yourself.  The storage generally uses a FAT
-filesystem.  When copying multiple files onto the storage, they are often
-stored in an arbitrary order.  This is true when using the command line (`cp`
-or `mv`) as well as when using a GUI.  This in itself is not a problem, but
-the firmware of many MP3 players uses the order in FAT tables, without any
-sorting.  This results in podcasts and album tracks being played out of order.
+filesystem.  When copying multiple files onto the storage, using the command
+line (`cp`/`mv`) or a GUI, they are generally stored in an arbitrary order.
+This is not a problem if the firmware of the MP3 player sorts by filename, but
+many MP3 players use the order in the FAT filesystem without sorting, which
+results in podcasts and album tracks being played out of order.
 
 There are some utilities that sort the FAT tables of an unmounted filesystem.
 (See [Related Software](#related-software) for information and links.)
-Unfortunately, there are many devices for which this does not work.
+Unfortunately, there are many devices for which this does not work.  PhatSort
+takes a different approach to solving the problem.  It works by creating new
+directories and moving ("renaming") the files in the desired order, while the
+filesystem is mounted.  This method works on all devices that have been tried
+so far.
 
-PhatSort takes a different approach to solving the problem.  It works by
-creating new directories and moving ("renaming") the files in the desired
-order, while the filesystem is mounted.  This method works on all devices that
-have been tried so far.
+PhatSort also (optionally) forces the filesystem buffers to be written to the
+storage media after each change.  This helps avoid write failures when using
+devices that have problems with writing large amounts of data.  Note that the
+`seqcp` utility helps with this issue even on non-FAT filesystems.
 
 ## Requirements
 
-PhatSort has only been tested on Linux.  It *might* work on Windows and macOS.
-Scripts that are output use POSIX shell commands and therefore require a POSIX
-shell to execute.
+PhatSort has only been tested on Linux.  It *might* work on other operating
+systems.  Scripts that are output use POSIX shell commands and therefore
+require a POSIX shell to execute.
 
 ## Installation
 
 ### Installation From Source
 
 PhatSort can be built from source using [Stack][].  For example, you can
-install the latest release (to `/usr/bin` on Linux) as follows:
+install the latest release (to `/usr/local` on Linux) as follows:
 
 ```
 $ git clone https://github.com/ExtremaIS/phatsort-haskell.git
@@ -72,7 +79,8 @@ Check the [Releases][] page for `.rpm` packages.
 
 ## Usage
 
-See the [`phatsort` man page](doc/phatsort.1.md) for usage information.
+See the [phatsort](doc/phatsort.1.md) and [seqcp](doc/seqcp.1.md) man pages
+for usage information.
 
 ## Related Software
 
@@ -93,7 +101,7 @@ FAT tables.  I have not tried it.
 ## Project
 
 PhatSort was written quickly to solve a particular pain point.  There are no
-plans to expose a library or put the package on Hackage.
+plans put the package on Hackage.
 
 ### Links
 
