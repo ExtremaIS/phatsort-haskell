@@ -32,8 +32,8 @@ MAKEFLAGS += --warn-undefined-variables
 .DEFAULT_GOAL := build
 
 CABAL_PROJECT_ARGS :=
-ifneq ($(origin PROJECT), undefined)
-  CABAL_PROJECT_ARGS := "--project-file=$(PROJECT)"
+ifneq ($(origin PROJECT_FILE), undefined)
+  CABAL_PROJECT_ARGS := "--project-file=$(PROJECT_FILE)"
 endif
 
 NIX_PATH_ARGS :=
