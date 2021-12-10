@@ -199,17 +199,22 @@ install-doc: # install documentation to PREFIX/share/doc/phatsort-haskell
 
 install-man: # install manual to PREFIX/share/man/man1
 > @mkdir -p "$(man1dir)"
-> @install -m 0644 -T <(gzip -c doc/$(BINARY).1) "$(man1dir)/$(BINARY).1.gz"
+> @install -m 0644 -T <(gzip -c doc/phatsort.1) "$(man1dir)/phatsort.1.gz"
+> @install -m 0644 -T <(gzip -c doc/seqcp.1) "$(man1dir)/seqcp.1.gz"
 .PHONY: install-man
 
 man: # build man page
 > $(eval VERSION := $(shell \
     grep '^version:' $(CABAL_FILE) | sed 's/^version: *//'))
 > $(eval DATE := $(shell date --rfc-3339=date))
-> @pandoc -s -t man -o doc/$(BINARY).1 \
->   --variable header="$(BINARY) Manual" \
+> @pandoc -s -t man -o doc/phatsort.1 \
+>   --variable header="phatsort Manual" \
 >   --variable footer="$(PROJECT) $(VERSION) ($(DATE))" \
->   doc/$(BINARY).1.md
+>   doc/phatsort.1.md
+> @pandoc -s -t man -o doc/seqcp.1 \
+>   --variable header="seqcp Manual" \
+>   --variable footer="$(PROJECT) $(VERSION) ($(DATE))" \
+>   doc/seqcp.1.md
 .PHONY: man
 
 recent: # show N most recently modified files
