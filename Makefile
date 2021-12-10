@@ -184,10 +184,19 @@ install: # install everything to PREFIX
 
 install-bin: build
 install-bin: # install executable to PREFIX/bin
-> $(eval LIROOT := $(shell stack path --local-install-root))
 > @mkdir -p "$(bindir)"
+ifeq ($(MODE), cabal)
+> @install -m 0755 \
+>   "$(shell cabal list-bin $(CABAL_PROJECT_ARGS) phatsort)" \
+>   "$(bindir)/phatsort"
+> @install -m 0755 \
+>   "$(shell cabal list-bin $(CABAL_PROJECT_ARGS) seqcp)" \
+>   "$(bindir)/seqcp"
+else
+> $(eval LIROOT := $(shell stack path --local-install-root))
 > @install -m 0755 "$(LIROOT)/bin/phatsort" "$(bindir)/phatsort"
 > @install -m 0755 "$(LIROOT)/bin/seqcp" "$(bindir)/seqcp"
+endif
 .PHONY: install-bin
 
 install-doc: # install documentation to PREFIX/share/doc/phatsort-haskell
