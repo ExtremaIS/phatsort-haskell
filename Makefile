@@ -2,7 +2,6 @@
 # Project configuration
 
 PACKAGE    := phatsort
-BINARY     := $(PACKAGE)
 CABAL_FILE := $(PACKAGE).cabal
 PROJECT    := $(PACKAGE)-haskell
 
@@ -187,7 +186,8 @@ install-bin: build
 install-bin: # install executable to PREFIX/bin
 > $(eval LIROOT := $(shell stack path --local-install-root))
 > @mkdir -p "$(bindir)"
-> @install -m 0755 "$(LIROOT)/bin/$(BINARY)" "$(bindir)/$(BINARY)"
+> @install -m 0755 "$(LIROOT)/bin/phatsort" "$(bindir)/phatsort"
+> @install -m 0755 "$(LIROOT)/bin/seqcp" "$(bindir)/seqcp"
 .PHONY: install-bin
 
 install-doc: # install documentation to PREFIX/share/doc/phatsort-haskell
