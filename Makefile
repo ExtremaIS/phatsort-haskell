@@ -81,9 +81,9 @@ endef
 build: hr
 build: # build package *
 ifeq ($(MODE), cabal)
-> @cabal v2-build $(CABAL_ARGS)
+> cabal v2-build $(CABAL_ARGS)
 else
-> @stack build $(STACK_ARGS)
+> stack build $(STACK_ARGS)
 endif
 .PHONY: build
 
@@ -128,9 +128,9 @@ deb: # build .deb package for VERSION in a Debian container
 doc-api: hr
 doc-api: # build API documentation *
 ifeq ($(MODE), cabal)
-> @cabal v2-haddock $(CABAL_ARGS)
+> cabal v2-haddock $(CABAL_ARGS)
 else
-> @stack haddock $(STACK_ARGS)
+> stack haddock $(STACK_ARGS)
 endif
 .PHONY: doc-api
 
@@ -236,9 +236,9 @@ recent: # show N most recently modified files
 
 repl: # enter a REPL *
 ifeq ($(MODE), cabal)
-> @cabal repl $(CABAL_ARGS)
+> cabal repl $(CABAL_ARGS)
 else
-> @stack exec ghci $(STACK_ARGS)
+> stack exec ghci $(STACK_ARGS)
 endif
 .PHONY: repl
 
