@@ -325,6 +325,9 @@ endif
 .PHONY: test
 
 test-all: # run tests for all configured Stackage releases
+ifeq ($(MODE), cabal)
+> $(call die,"test-all not supported in CABAL mode")
+endif
 > @command -v hr >/dev/null 2>&1 && hr "stack-8.2.2.yaml" || true
 > @make test CONFIG=stack-8.2.2.yaml
 > @command -v hr >/dev/null 2>&1 && hr "stack-8.4.4.yaml" || true
