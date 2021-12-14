@@ -31,22 +31,6 @@ MAKEFLAGS += --warn-undefined-variables
 
 .DEFAULT_GOAL := build
 
-NIX_PATH_ARGS :=
-ifneq ($(origin STACK_NIX_PATH), undefined)
-  NIX_PATH_ARGS := "--nix-path=$(STACK_NIX_PATH)"
-endif
-
-RESOLVER_ARGS :=
-ifneq ($(origin RESOLVER), undefined)
-  RESOLVER_ARGS := "--resolver" "$(RESOLVER)"
-endif
-
-STACK_YAML_ARGS :=
-ifneq ($(origin CONFIG), undefined)
-  STACK_YAML_ARGS := "--stack-yaml" "$(CONFIG)"
-endif
-
-MODE := stack
 ifneq ($(origin CABAL), undefined)
   MODE := cabal
   CABAL_ARGS :=
@@ -57,6 +41,18 @@ ifneq ($(origin CABAL), undefined)
     ifneq (,$(wildcard $(PROJECT_FILE)))
       CABAL_ARGS += "--project-file=$(PROJECT_FILE)"
     endif
+  endif
+else
+  MODE := stack
+  STACK_ARGS :=
+  ifneq ($(origin CONFIG), undefined)
+    STACK_ARGS += --stack-yaml "$(CONFIG)"
+  endif
+  ifneq ($(origin RESOLVER), undefined)
+    STACK_ARGS += --resolver "$(RESOLVER)"
+  endif
+  ifneq ($(origin STACK_NIX_PATH), undefined)
+    STACK_ARGS += "--nix-path=$(STACK_NIX_PATH)"
   endif
 endif
 
@@ -87,7 +83,7 @@ build: # build package *
 ifeq ($(MODE), cabal)
 > @cabal v2-build $(CABAL_ARGS)
 else
-> @stack build $(RESOLVER_ARGS) $(STACK_YAML_ARGS) $(NIX_PATH_ARGS)
+> @stack build $(STACK_ARGS)
 endif
 .PHONY: build
 
@@ -134,7 +130,7 @@ doc-api: # build API documentation *
 ifeq ($(MODE), cabal)
 > @cabal v2-haddock $(CABAL_ARGS)
 else
-> @stack haddock $(RESOLVER_ARGS) $(STACK_YAML_ARGS) $(NIX_PATH_ARGS)
+> @stack haddock $(STACK_ARGS)
 endif
 .PHONY: doc-api
 
@@ -242,7 +238,7 @@ repl: # enter a REPL *
 ifeq ($(MODE), cabal)
 > @cabal repl $(CABAL_ARGS)
 else
-> @stack exec ghci $(RESOLVER_ARGS) $(STACK_YAML_ARGS) $(NIX_PATH_ARGS)
+> @stack exec ghci $(STACK_ARGS)
 endif
 .PHONY: repl
 
@@ -323,9 +319,8 @@ ifeq ($(MODE), cabal)
 >       --test-option '--patern=$(P)' $(CABAL_ARGS)
 else
 > @test -z "$(P)" \
->   && stack test $(RESOLVER_ARGS) $(STACK_YAML_ARGS) $(NIX_PATH_ARGS) \
->   || stack test $(RESOLVER_ARGS) $(STACK_YAML_ARGS) $(NIX_PATH_ARGS) \
->       --test-arguments '--pattern $(P)'
+>   && stack test $(STACK_ARGS) \
+>   || stack test $(STACK_ARGS) --test-arguments '--pattern $(P)'
 endif
 .PHONY: test
 
