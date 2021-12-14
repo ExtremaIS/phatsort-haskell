@@ -149,10 +149,11 @@ help: # show this help
 >   | sed 's/^\([^:]\+\):[^#]*# \(.*\)/make \1\t\2/' \
 >   | column -t -s $$'\t'
 > @echo
-> @echo "* Use STACK_NIX_PATH to specify a Nix path."
-> @echo "* Use RESOLVER to specify a resolver."
-> @echo "* Use CONFIG to specify a Stack configuration file."
-> @echo "* Use CABAL to use Cabal instead of Stack."
+> @echo "* Set CABAL to use Cabal instead of Stack."
+> @echo "* Set CONFIG to specify a Stack configuration file."
+> @echo "* Set PROJECT_FILE to specify a cabal.project file."
+> @echo "* Set RESOLVER to specify a Stack resolver."
+> @echo "* Set STACK_NIX_PATH to specify a Stack Nix path."
 .PHONY: help
 
 hlint: # run hlint on all Haskell source
