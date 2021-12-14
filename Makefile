@@ -350,6 +350,9 @@ endif
 .PHONY: test-all
 
 test-nightly: # run tests for the latest Stackage nightly release
+ifeq ($(MODE), cabal)
+> $(call die,"test-nightly not supported in CABAL mode")
+endif
 > @make test RESOLVER=nightly
 .PHONY: test-nightly
 
