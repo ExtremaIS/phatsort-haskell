@@ -102,7 +102,8 @@ else
 endif
 .PHONY: clean
 
-clean-all: clean # clean package and remove artifacts
+clean-all: clean
+clean-all: # clean package and remove artifacts
 > @rm -rf .hie
 > @rm -rf .stack-work
 > @rm -rf build
