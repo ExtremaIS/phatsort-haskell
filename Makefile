@@ -184,11 +184,11 @@ hssloc: # count lines of Haskell source
 install: install-bin
 install: install-man
 install: install-doc
-install: # install everything to PREFIX
+install: # install everything to PREFIX (*)
 .PHONY: install
 
 install-bin: build
-install-bin: # install executable to PREFIX/bin
+install-bin: # install executable to PREFIX/bin (*)
 > @mkdir -p "$(bindir)"
 ifeq ($(MODE), cabal)
 > @install -m 0755 \
