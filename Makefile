@@ -31,11 +31,6 @@ MAKEFLAGS += --warn-undefined-variables
 
 .DEFAULT_GOAL := build
 
-CABAL_PROJECT_ARGS :=
-ifneq ($(origin PROJECT_FILE), undefined)
-  CABAL_PROJECT_ARGS := "--project-file=$(PROJECT_FILE)"
-endif
-
 NIX_PATH_ARGS :=
 ifneq ($(origin STACK_NIX_PATH), undefined)
   NIX_PATH_ARGS := "--nix-path=$(STACK_NIX_PATH)"
@@ -54,6 +49,15 @@ endif
 MODE := stack
 ifneq ($(origin CABAL), undefined)
   MODE := cabal
+  CABAL_ARGS :=
+  ifneq ($(origin PROJECT_FILE), undefined)
+    CABAL_ARGS += "--project-file=$(PROJECT_FILE)"
+  else
+    PROJECT_FILE := cabal-$(shell ghc --version | sed 's/.* //').project
+    ifneq (,$(wildcard $(PROJECT_FILE)))
+      CABAL_ARGS += "--project-file=$(PROJECT_FILE)"
+    endif
+  endif
 endif
 
 ##############################################################################
@@ -81,7 +85,7 @@ endef
 build: hr
 build: # build package *
 ifeq ($(MODE), cabal)
-> @cabal v2-build $(CABAL_PROJECT_ARGS)
+> @cabal v2-build $(CABAL_ARGS)
 else
 > @stack build $(RESOLVER_ARGS) $(STACK_YAML_ARGS) $(NIX_PATH_ARGS)
 endif
@@ -128,7 +132,7 @@ deb: # build .deb package for VERSION in a Debian container
 doc-api: hr
 doc-api: # build API documentation *
 ifeq ($(MODE), cabal)
-> @cabal v2-haddock $(CABAL_PROJECT_ARGS)
+> @cabal v2-haddock $(CABAL_ARGS)
 else
 > @stack haddock $(RESOLVER_ARGS) $(STACK_YAML_ARGS) $(NIX_PATH_ARGS)
 endif
@@ -187,10 +191,10 @@ install-bin: # install executable to PREFIX/bin
 > @mkdir -p "$(bindir)"
 ifeq ($(MODE), cabal)
 > @install -m 0755 \
->   "$(shell cabal list-bin $(CABAL_PROJECT_ARGS) phatsort)" \
+>   "$(shell cabal list-bin $(CABAL_ARGS) phatsort)" \
 >   "$(bindir)/phatsort"
 > @install -m 0755 \
->   "$(shell cabal list-bin $(CABAL_PROJECT_ARGS) seqcp)" \
+>   "$(shell cabal list-bin $(CABAL_ARGS) seqcp)" \
 >   "$(bindir)/seqcp"
 else
 > $(eval LIROOT := $(shell stack path --local-install-root))
@@ -235,7 +239,7 @@ recent: # show N most recently modified files
 
 repl: # enter a REPL *
 ifeq ($(MODE), cabal)
-> @cabal repl $(CABAL_PROJECT_ARGS)
+> @cabal repl $(CABAL_ARGS)
 else
 > @stack exec ghci $(RESOLVER_ARGS) $(STACK_YAML_ARGS) $(NIX_PATH_ARGS)
 endif
@@ -313,9 +317,9 @@ test: # run tests, optionally for pattern P *
 ifeq ($(MODE), cabal)
 > @test -z "$(P)" \
 >   && cabal v2-test --enable-tests --test-show-details=always \
->       $(CABAL_PROJECT_ARGS) \
+>       $(CABAL_ARGS) \
 >   || cabal v2-test --enable-tests --test-show-details=always \
->       --test-option '--patern=$(P)' $(CABAL_PROJECT_ARGS)
+>       --test-option '--patern=$(P)' $(CABAL_ARGS)
 else
 > @test -z "$(P)" \
 >   && stack test $(RESOLVER_ARGS) $(STACK_YAML_ARGS) $(NIX_PATH_ARGS) \
