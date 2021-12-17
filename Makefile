@@ -6,8 +6,8 @@ CABAL_FILE  := $(PACKAGE).cabal
 PROJECT     := $(PACKAGE)-haskell
 EXECUTABLES := phatsort seqcp
 
-MAINTAINER_NAME  = Travis Cardwell
-MAINTAINER_EMAIL = travis.cardwell@extrema.is
+MAINTAINER_NAME  ?= Travis Cardwell
+MAINTAINER_EMAIL ?= travis.cardwell@extrema.is
 
 DESTDIR ?=
 PREFIX  ?= /usr/local
