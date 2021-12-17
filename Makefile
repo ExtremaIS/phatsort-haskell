@@ -1,9 +1,10 @@
 ##############################################################################
 # Project configuration
 
-PACKAGE    := phatsort
-CABAL_FILE := $(PACKAGE).cabal
-PROJECT    := $(PACKAGE)-haskell
+PACKAGE     := phatsort
+CABAL_FILE  := $(PACKAGE).cabal
+PROJECT     := $(PACKAGE)-haskell
+EXECUTABLES := phatsort seqcp
 
 MAINTAINER_NAME  = Travis Cardwell
 MAINTAINER_EMAIL = travis.cardwell@extrema.is
@@ -73,6 +74,11 @@ endef
 
 define hs_files
   find . -not -path '*/\.*' -type f -name '*.hs'
+endef
+
+define newline
+
+
 endef
 
 ##############################################################################
@@ -181,51 +187,51 @@ hssloc: # count lines of Haskell source
 install: install-bin
 install: install-man
 install: install-doc
-install: # install everything to PREFIX (*)
+install: # install everything (*)
 .PHONY: install
 
 install-bin: build
-install-bin: # install executable to PREFIX/bin (*)
+install-bin: # install executable(s) (*)
 > @mkdir -p "$(bindir)"
 ifeq ($(MODE), cabal)
-> @install -m 0755 \
->   "$(shell cabal list-bin $(CABAL_ARGS) phatsort)" \
->   "$(bindir)/phatsort"
-> @install -m 0755 \
->   "$(shell cabal list-bin $(CABAL_ARGS) seqcp)" \
->   "$(bindir)/seqcp"
+> $(foreach EXE,$(EXECUTABLES), \
+    @install -m 0755 \
+      "$(shell cabal list-bin $(CABAL_ARGS) $(EXE))" \
+      "$(bindir)/$(EXE)" $(newline) \
+  )
 else
 > $(eval LIROOT := $(shell stack path --local-install-root))
-> @install -m 0755 "$(LIROOT)/bin/phatsort" "$(bindir)/phatsort"
-> @install -m 0755 "$(LIROOT)/bin/seqcp" "$(bindir)/seqcp"
+> $(foreach EXE,$(EXECUTABLES), \
+    @install -m 0755 "$(LIROOT)/bin/$(EXE)" "$(bindir)/$(EXE)" $(newline) \
+  )
 endif
 .PHONY: install-bin
 
-install-doc: # install documentation to PREFIX/share/doc/phatsort-haskell
+install-doc: # install documentation
 > @mkdir -p "$(docdir)"
 > @install -m 0644 -T <(gzip -c README.md) "$(docdir)/README.md.gz"
 > @install -m 0644 -T <(gzip -c CHANGELOG.md) "$(docdir)/changelog.gz"
 > @install -m 0644 -T <(gzip -c LICENSE) "$(docdir)/LICENSE.gz"
 .PHONY: install-doc
 
-install-man: # install manual to PREFIX/share/man/man1
+install-man: # install man page(s)
 > @mkdir -p "$(man1dir)"
-> @install -m 0644 -T <(gzip -c doc/phatsort.1) "$(man1dir)/phatsort.1.gz"
-> @install -m 0644 -T <(gzip -c doc/seqcp.1) "$(man1dir)/seqcp.1.gz"
+> $(foreach EXE,$(EXECUTABLES), \
+    @install -m 0644 "doc/$(EXE).1" "$(man1dir)" $(newline) \
+    @gzip "$(man1dir)/$(EXE).1" $(newline) \
+  )
 .PHONY: install-man
 
 man: # build man page
 > $(eval VERSION := $(shell \
     grep '^version:' $(CABAL_FILE) | sed 's/^version: *//'))
 > $(eval DATE := $(shell date --rfc-3339=date))
-> @pandoc -s -t man -o doc/phatsort.1 \
->   --variable header="phatsort Manual" \
->   --variable footer="$(PROJECT) $(VERSION) ($(DATE))" \
->   doc/phatsort.1.md
-> @pandoc -s -t man -o doc/seqcp.1 \
->   --variable header="seqcp Manual" \
->   --variable footer="$(PROJECT) $(VERSION) ($(DATE))" \
->   doc/seqcp.1.md
+> $(foreach EXE,$(EXECUTABLES), \
+    @pandoc -s -t man -o doc/$(EXE).1 \
+      --variable header="$(EXE) Manual" \
+      --variable footer="$(PROJECT) $(VERSION) ($(DATE))" \
+      doc/$(EXE).1.md $(newline) \
+  )
 .PHONY: man
 
 recent: # show N most recently modified files
