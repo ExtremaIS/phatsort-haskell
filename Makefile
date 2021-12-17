@@ -209,9 +209,12 @@ endif
 
 install-doc: # install documentation
 > @mkdir -p "$(docdir)"
-> @install -m 0644 -T <(gzip -c README.md) "$(docdir)/README.md.gz"
-> @install -m 0644 -T <(gzip -c CHANGELOG.md) "$(docdir)/changelog.gz"
-> @install -m 0644 -T <(gzip -c LICENSE) "$(docdir)/LICENSE.gz"
+> @install -m 0644 README.md "$(docdir)"
+> @gzip "$(docdir)/README.md"
+> @install -m 0644 -T CHANGELOG.md "$(docdir)/changelog"
+> @gzip "$(docdir)/changelog"
+> @install -m 0644 LICENSE "$(docdir)"
+> @gzip "$(docdir)/LICENSE"
 .PHONY: install-doc
 
 install-man: # install man page(s)
