@@ -337,7 +337,7 @@ endif
 
 test-all: # run tests for all configured Stackage releases
 ifeq ($(MODE), cabal)
-> $(call die,"test-all not supported in CABAL mode")
+> $(error test-all not supported in CABAL mode)
 endif
 > @command -v hr >/dev/null 2>&1 && hr "stack-8.2.2.yaml" || true
 > @make test CONFIG=stack-8.2.2.yaml
@@ -357,7 +357,7 @@ endif
 
 test-nightly: # run tests for the latest Stackage nightly release
 ifeq ($(MODE), cabal)
-> $(call die,"test-nightly not supported in CABAL mode")
+> $(error test-nightly not supported in CABAL mode)
 endif
 > @make test RESOLVER=nightly
 .PHONY: test-nightly
