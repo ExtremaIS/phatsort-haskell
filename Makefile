@@ -9,12 +9,8 @@ EXECUTABLES := phatsort seqcp
 MAINTAINER_NAME  = Travis Cardwell
 MAINTAINER_EMAIL = travis.cardwell@extrema.is
 
-DESTDIR     ?=
-PREFIX      ?= /usr/local
-bindir      ?= $(DESTDIR)/$(PREFIX)/bin
-datarootdir ?= $(DESTDIR)/$(PREFIX)/share
-docdir      ?= $(datarootdir)/doc/$(PROJECT)
-man1dir     ?= $(datarootdir)/man/man1
+DESTDIR ?=
+PREFIX  ?= /usr/local
 
 ##############################################################################
 # Make configuration
@@ -31,6 +27,11 @@ MAKEFLAGS += --no-builtin-rules
 MAKEFLAGS += --warn-undefined-variables
 
 .DEFAULT_GOAL := build
+
+BINDIR      := $(DESTDIR)$(PREFIX)/bin
+DATAROOTDIR := $(DESTDIR)$(PREFIX)/share
+DOCDIR      := $(DATAROOTDIR)/doc/$(PROJECT)
+MAN1DIR     := $(DATAROOTDIR)/man/man1
 
 ifneq ($(origin CABAL), undefined)
   MODE := cabal
@@ -192,36 +193,36 @@ install: # install everything (*)
 
 install-bin: build
 install-bin: # install executable(s) (*)
-> @mkdir -p "$(bindir)"
+> @mkdir -p "$(BINDIR)"
 ifeq ($(MODE), cabal)
 > $(foreach EXE,$(EXECUTABLES), \
     @install -m 0755 \
       "$(shell cabal list-bin $(CABAL_ARGS) $(EXE))" \
-      "$(bindir)/$(EXE)" $(newline) \
+      "$(BINDIR)/$(EXE)" $(newline) \
   )
 else
 > $(eval LIROOT := $(shell stack path --local-install-root))
 > $(foreach EXE,$(EXECUTABLES), \
-    @install -m 0755 "$(LIROOT)/bin/$(EXE)" "$(bindir)/$(EXE)" $(newline) \
+    @install -m 0755 "$(LIROOT)/bin/$(EXE)" "$(BINDIR)/$(EXE)" $(newline) \
   )
 endif
 .PHONY: install-bin
 
 install-doc: # install documentation
-> @mkdir -p "$(docdir)"
-> @install -m 0644 README.md "$(docdir)"
-> @gzip "$(docdir)/README.md"
-> @install -m 0644 -T CHANGELOG.md "$(docdir)/changelog"
-> @gzip "$(docdir)/changelog"
-> @install -m 0644 LICENSE "$(docdir)"
-> @gzip "$(docdir)/LICENSE"
+> @mkdir -p "$(DOCDIR)"
+> @install -m 0644 README.md "$(DOCDIR)"
+> @gzip "$(DOCDIR)/README.md"
+> @install -m 0644 -T CHANGELOG.md "$(DOCDIR)/changelog"
+> @gzip "$(DOCDIR)/changelog"
+> @install -m 0644 LICENSE "$(DOCDIR)"
+> @gzip "$(DOCDIR)/LICENSE"
 .PHONY: install-doc
 
 install-man: # install man page(s)
-> @mkdir -p "$(man1dir)"
+> @mkdir -p "$(MAN1DIR)"
 > $(foreach EXE,$(EXECUTABLES), \
-    @install -m 0644 "doc/$(EXE).1" "$(man1dir)" $(newline) \
-    @gzip "$(man1dir)/$(EXE).1" $(newline) \
+    @install -m 0644 "doc/$(EXE).1" "$(MAN1DIR)" $(newline) \
+    @gzip "$(MAN1DIR)/$(EXE).1" $(newline) \
   )
 .PHONY: install-man
 
