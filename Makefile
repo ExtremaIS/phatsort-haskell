@@ -6,6 +6,14 @@ CABAL_FILE  := $(PACKAGE).cabal
 PROJECT     := $(PACKAGE)-haskell
 EXECUTABLES := phatsort seqcp
 
+STACK_TEST_CONFIGS += stack-8.2.2.yaml
+STACK_TEST_CONFIGS += stack-8.4.4.yaml
+STACK_TEST_CONFIGS += stack-8.6.5.yaml
+STACK_TEST_CONFIGS += stack-8.8.4.yaml
+STACK_TEST_CONFIGS += stack-8.10.7.yaml
+STACK_TEST_CONFIGS += stack-9.0.1.yaml
+STACK_TEST_CONFIGS += stack-9.2.1.yaml
+
 DESTDIR ?=
 PREFIX  ?= /usr/local
 
@@ -341,20 +349,10 @@ test-all: # run tests for all configured Stackage releases
 ifeq ($(MODE), cabal)
 > $(error test-all not supported in CABAL mode)
 endif
-> @command -v hr >/dev/null 2>&1 && hr "stack-8.2.2.yaml" || true
-> @make test CONFIG=stack-8.2.2.yaml
-> @command -v hr >/dev/null 2>&1 && hr "stack-8.4.4.yaml" || true
-> @make test CONFIG=stack-8.4.4.yaml
-> @command -v hr >/dev/null 2>&1 && hr "stack-8.6.5.yaml" || true
-> @make test CONFIG=stack-8.6.5.yaml
-> @command -v hr >/dev/null 2>&1 && hr "stack-8.8.4.yaml" || true
-> @make test CONFIG=stack-8.8.4.yaml
-> @command -v hr >/dev/null 2>&1 && hr "stack-8.10.7.yaml" || true
-> @make test CONFIG=stack-8.10.7.yaml
-> @command -v hr >/dev/null 2>&1 && hr "stack-9.0.1.yaml" || true
-> @make test CONFIG=stack-9.0.1.yaml
-> @command -v hr >/dev/null 2>&1 && hr "stack-9.2.1.yaml" || true
-> @make test CONFIG=stack-9.2.1.yaml
+> $(foreach CONFIG,$(STACK_TEST_CONFIGS), \
+    @command -v hr >/dev/null 2>&1 && hr $(CONFIG) || true $(newline) \
+    @make test CONFIG=$(CONFIG) $(newline) \
+  )
 .PHONY: test-all
 
 test-nightly: # run tests for the latest Stackage nightly release
