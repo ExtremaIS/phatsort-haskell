@@ -6,11 +6,13 @@ CABAL_FILE  := $(PACKAGE).cabal
 PROJECT     := $(PACKAGE)-haskell
 EXECUTABLES := phatsort seqcp
 
-MAINTAINER_NAME  ?= Travis Cardwell
-MAINTAINER_EMAIL ?= travis.cardwell@extrema.is
-
 DESTDIR ?=
 PREFIX  ?= /usr/local
+
+DEB_CONTAINER    ?= extremais/pkg-debian-stack:bullseye
+RPM_CONTAINER    ?= extremais/pkg-fedora-stack:34
+MAINTAINER_NAME  ?= Travis Cardwell
+MAINTAINER_EMAIL ?= travis.cardwell@extrema.is
 
 ##############################################################################
 # Make configuration
@@ -129,7 +131,7 @@ deb: # build .deb package for VERSION in a Debian container
 >   -e DEBFULLNAME="$(MAINTAINER_NAME)" \
 >   -e DEBEMAIL="$(MAINTAINER_EMAIL)" \
 >   -v $(PWD)/build:/host \
->   extremais/pkg-debian-stack:bullseye \
+>   $(DEB_CONTAINER) \
 >   /home/docker/bin/make-deb.sh "$(SRC)"
 .PHONY: deb
 
@@ -262,7 +264,7 @@ rpm: # build .rpm package for VERSION in a Fedora container
 >   -e RPMFULLNAME="$(MAINTAINER_NAME)" \
 >   -e RPMEMAIL="$(MAINTAINER_EMAIL)" \
 >   -v $(PWD)/build:/host \
->   extremais/pkg-fedora-stack:34 \
+>   $(RPM_CONTAINER) \
 >   /home/docker/bin/make-rpm.sh "$(SRC)"
 .PHONY: rpm
 
