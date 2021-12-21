@@ -23,9 +23,9 @@ jobs:
           ghc-version: ${{ matrix.ghc }}
           cabal-version: latest
       - name: Build
-        run: cabal new-build --enable-tests --enable-benchmarks --project-file=cabal-${{ matrix.ghc }}.project
+        run: cabal new-build --enable-tests --enable-benchmarks
       - name: Test
-        run: cabal new-test --enable-tests --project-file=cabal-${{ matrix.ghc }}.project
+        run: cabal new-test --enable-tests
 
   stack:
     name: "Stack: GHC ${{ matrix.ghc }}"
@@ -72,6 +72,6 @@ jobs:
           ghc-version: 8.2.2
           cabal-version: ${{ matrix.cabal }}
       - name: Build
-        run: cabal new-build --enable-tests --enable-benchmarks --project-file=cabal-8.2.2.project
+        run: cabal new-build --enable-tests --enable-benchmarks
       - name: Test
-        run: cabal new-test --enable-tests --project-file=cabal-8.2.2.project
+        run: cabal new-test --enable-tests
