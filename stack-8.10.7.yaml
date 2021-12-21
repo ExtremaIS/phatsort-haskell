@@ -1,9 +1,8 @@
-resolver: lts-18.18
+resolver: lts-18.19
 
 packages:
   - .
 
 extra-deps:
-  - explainable-predicates-0.1.2.0
-  - git: https://github.com/cdsmith/HMock.git
-    commit: b073d0ed096e38f46f1cb8ab526e2e92f24adbbb
+  - explainable-predicates-0.1.2.1
+  - HMock-0.5.1.0
