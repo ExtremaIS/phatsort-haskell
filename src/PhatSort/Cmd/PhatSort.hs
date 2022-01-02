@@ -2,7 +2,7 @@
 -- |
 -- Module      : PhatSort.Cmd.PhatSort
 -- Description : phatsort command implementation
--- Copyright   : Copyright (c) 2019-2021 Travis Cardwell
+-- Copyright   : Copyright (c) 2019-2022 Travis Cardwell
 -- License     : MIT
 ------------------------------------------------------------------------------
 

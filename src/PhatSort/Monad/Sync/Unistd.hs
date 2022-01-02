@@ -2,7 +2,7 @@
 -- |
 -- Module      : PhatSort.Monad.Sync.Unistd
 -- Description : sync implementation for POSIX systems
--- Copyright   : Copyright (c) 2019-2021 Travis Cardwell
+-- Copyright   : Copyright (c) 2019-2022 Travis Cardwell
 -- License     : MIT
 ------------------------------------------------------------------------------
 

@@ -2,7 +2,7 @@
 -- |
 -- Module      : PhatSort.Monad.Sync
 -- Description : commit all data in filesystem buffers
--- Copyright   : Copyright (c) 2019-2021 Travis Cardwell
+-- Copyright   : Copyright (c) 2019-2022 Travis Cardwell
 -- License     : MIT
 ------------------------------------------------------------------------------
 
