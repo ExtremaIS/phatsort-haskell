@@ -1,4 +1,4 @@
-module PhatSort.Cmd.SeqCp.HMock (tests) where
+module PhatSort.Cmd.SeqCp.Mock (tests) where
 
 -- https://hackage.haskell.org/package/base
 import Control.Monad ((<=<))
@@ -2188,7 +2188,7 @@ testLargeScript = testCase "LargeScript" . runMockT $ do
 ------------------------------------------------------------------------------
 
 tests :: TestTree
-tests = testGroup "seqcp:HMock"
+tests = testGroup "seqcp:Mock"
     [ testCaseSensitive
     , testCaseSensitiveScript
     , testSourcesCaseSensitive
