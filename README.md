@@ -2,18 +2,23 @@
 
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![GitHub CI](https://github.com/ExtremaIS/phatsort-haskell/workflows/CI/badge.svg?branch=main)](https://github.com/ExtremaIS/phatsort-haskell/actions)
+[![Hackage](https://img.shields.io/hackage/v/phatsort.svg)](https://hackage.haskell.org/package/phatsort)
+[![Stackage LTS](https://stackage.org/package/phatsort/badge/lts)](https://stackage.org/package/phatsort)
+[![Stackage Nightly](https://stackage.org/package/phatsort/badge/nightly)](https://stackage.org/nightly/package/phatsort)
 
 * [Overview](#overview)
-* [Requirements](#requirements)
-* [Installation](#installation)
-    * [Installation From Source](#installation-from-source)
-    * [`.deb` Package Installation](#deb-package-installation)
-    * [`.rpm` Package Installation](#rpm-package-installation)
-* [Usage](#usage)
+* [CLI](#cli)
+    * [Requirements](#requirements)
+    * [Installation](#installation)
+        * [`.deb` Package Installation](#deb-package-installation)
+        * [`.rpm` Package Installation](#rpm-package-installation)
+        * [Installation From Hackage](#installation-from-hackage)
+        * [Installation From Stackage](#installation-from-stackage)
+    * [Usage](#usage)
 * [Related Software](#related-software)
 * [Project](#project)
     * [Links](#links)
-    * [Releases](#releases)
+    * [Tags](#tags)
     * [Contribution](#contribution)
     * [License](#license)
 
@@ -45,27 +50,15 @@ storage media after each change.  This helps avoid write failures when using
 devices that have problems with writing large amounts of data.  Note that the
 `seqcp` utility helps with this issue even on non-FAT filesystems.
 
-## Requirements
+## CLI
+
+### Requirements
 
 PhatSort has only been tested on Linux.  It *might* work on other operating
 systems.  Scripts that are output use POSIX shell commands and therefore
 require a POSIX shell to execute.
 
-## Installation
-
-### Installation From Source
-
-PhatSort can be built from source using [Stack][].  For example, you can
-install the latest release (to `/usr/local` on Linux) as follows:
-
-```
-$ git clone https://github.com/ExtremaIS/phatsort-haskell.git
-$ cd phatsort-haskell
-$ make
-$ sudo make install
-```
-
-[Stack]: <https://www.haskellstack.org>
+### Installation
 
 #### `.deb` Package Installation
 
@@ -73,11 +66,33 @@ Check the [Releases][] page for `.deb` packages.
 
 #### `.rpm` Package Installation
 
-Check the [Releases][] page for `.rpm` packages.
-
 [Releases]: <https://github.com/ExtremaIS/phatsort-haskell/releases>
 
-## Usage
+Check the [Releases][] page for `.rpm` packages.
+
+#### Installation From Hackage
+
+Install PhatSort from [Hackage][] using [Cabal][] as follows:
+
+```
+$ cabal v2-install phatsort
+```
+
+[Hackage]: <https://hackage.haskell.org/package/phatsort>
+[Cabal]: <https://www.haskell.org/cabal/>
+
+#### Installation From Stackage
+
+Install PhatSort from [Stackage][] using [Stack][] as follows:
+
+```
+$ stack install phatsort
+```
+
+[Stackage]: <https://www.stackage.org/package/phatsort>
+[Stack]: <https://haskellstack.org/>
+
+### Usage
 
 See the [phatsort](doc/phatsort.1.md) and [seqcp](doc/seqcp.1.md) man pages
 for usage information.
@@ -105,9 +120,12 @@ plans put the package on Hackage.
 
 ### Links
 
+* Hackage: <https://hackage.haskell.org/package/phatsort>
+* Stackage: <https://www.stackage.org/package/phatsort>
 * GitHub: <https://github.com/ExtremaIS/phatsort-haskell>
+* GitHub Actions CI: <https://github.com/ExtremaIS/phatsort-haskell/actions>
 
-### Releases
+### Tags
 
 All releases are tagged in the `main` branch.  Release tags are signed using
 the
