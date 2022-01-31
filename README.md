@@ -94,8 +94,8 @@ $ stack install phatsort
 
 ### Usage
 
-See the [phatsort](doc/phatsort.1.md) and [seqcp](doc/seqcp.1.md) man pages
-for usage information.
+See the [`phatsort`](doc/phatsort.1.md) and [`seqcp`](doc/seqcp.1.md) man
+pages for usage information.
 
 ## Related Software
 
@@ -114,9 +114,6 @@ software that sorts unmounted FAT filesystems by direct manipulation of the
 FAT tables.  I have not tried it.
 
 ## Project
-
-PhatSort was written quickly to solve a particular pain point.  There are no
-plans put the package on Hackage.
 
 ### Links
 
