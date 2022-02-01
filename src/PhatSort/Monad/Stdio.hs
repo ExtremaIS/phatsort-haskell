@@ -23,6 +23,8 @@ import Control.Monad.Trans.Except (ExceptT)
 -- $MonadStdio
 
 -- | Standard I/O
+--
+-- @since 0.5.0.0
 class Monad m => MonadStdio m where
   -- | Write a 'String' to @STDOUT@, appending a newline
   putStrLn :: String -> m ()

@@ -26,6 +26,8 @@ import PhatSort.Monad.Sync.Unistd (c_sync)
 -- $MonadSync
 
 -- | Commit all data in filesystem buffers
+--
+-- @since 0.5.0.0
 class Monad m => MonadSync m where
   -- | Commit all data in filesystem buffers
   --

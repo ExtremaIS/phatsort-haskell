@@ -21,5 +21,7 @@ import qualified Paths_phatsort as Project
 -- $Constants
 
 -- | PhatSort version string (\"@phatsort-haskell X.X.X.X@\")
+--
+-- @since 0.5.0.0
 version :: String
 version = "phatsort-haskell " ++ showVersion Project.version

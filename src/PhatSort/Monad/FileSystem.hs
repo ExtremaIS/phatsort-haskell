@@ -31,6 +31,8 @@ import qualified System.PosixCompat.Files as Files
 -- $MonadFileSystem
 
 -- | Filesystem I/O
+--
+-- @since 0.5.0.0
 class Monad m => MonadFileSystem m where
   -- | Copy a file
   copyFile
@@ -128,6 +130,8 @@ instance MonadFileSystem m => MonadFileSystem (ExceptT e m) where
 -- $FileStatus
 
 -- | Mockable subset of 'Files.FileStatus'
+--
+-- @since 0.5.0.0
 data FileStatus
   = FileStatus
     { deviceID         :: !DeviceID
@@ -136,6 +140,8 @@ data FileStatus
     }
 
 -- | Convert from 'Files.FileStatus' to 'FileStatus'
+--
+-- @since 0.5.0.0
 toFileStatus :: Files.FileStatus -> FileStatus
 toFileStatus status = FileStatus
     { deviceID         = Files.deviceID status

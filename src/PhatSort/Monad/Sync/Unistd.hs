@@ -16,5 +16,7 @@ module PhatSort.Monad.Sync.Unistd
 ------------------------------------------------------------------------------
 
 -- | Call the @sync@ system call
+--
+-- @since 0.5.0.0
 foreign import ccall "unistd.h sync"
   c_sync :: IO ()

@@ -17,6 +17,8 @@ import Data.Char (ord)
 ------------------------------------------------------------------------------
 
 -- | Format a shell command, escaping when necessary
+--
+-- @since 0.5.0.0
 formatCommand
   :: [String]  -- ^ command and arguments
   -> String

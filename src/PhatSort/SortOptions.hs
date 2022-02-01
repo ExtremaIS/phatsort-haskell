@@ -16,6 +16,8 @@ module PhatSort.SortOptions
 ------------------------------------------------------------------------------
 
 -- | Case sensitivity
+--
+-- @since 0.5.0.0
 data SortCase
   = CaseSensitive
   | CaseInsensitive
@@ -24,6 +26,8 @@ data SortCase
 ------------------------------------------------------------------------------
 
 -- | Sorting certain directory entries first
+--
+-- @since 0.5.0.0
 data SortFirst
   = FirstNone
   | FirstDirs
@@ -33,6 +37,8 @@ data SortFirst
 ------------------------------------------------------------------------------
 
 -- | Sort order
+--
+-- @since 0.5.0.0
 data SortOrder
   = OrderName
   | OrderTime
