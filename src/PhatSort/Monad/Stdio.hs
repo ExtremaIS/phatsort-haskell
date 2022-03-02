@@ -2,7 +2,7 @@
 -- |
 -- Module      : PhatSort.Monad.Stdio
 -- Description : standard I/O
--- Copyright   : Copyright (c) 2019-2021 Travis Cardwell
+-- Copyright   : Copyright (c) 2019-2022 Travis Cardwell
 -- License     : MIT
 ------------------------------------------------------------------------------
 
@@ -23,6 +23,8 @@ import Control.Monad.Trans.Except (ExceptT)
 -- $MonadStdio
 
 -- | Standard I/O
+--
+-- @since 0.5.0.0
 class Monad m => MonadStdio m where
   -- | Write a 'String' to @STDOUT@, appending a newline
   putStrLn :: String -> m ()

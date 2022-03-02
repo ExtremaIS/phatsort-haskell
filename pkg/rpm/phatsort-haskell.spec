@@ -30,7 +30,9 @@ make test
 
 %files
 %{_bindir}/phatsort
+%{_bindir}/seqcp
 %{_mandir}/man1/phatsort.1.gz
+%{_mandir}/man1/seqcp.1.gz
 %{_datadir}/doc/%{name}/
 
 %changelog

@@ -1,4 +1,4 @@
-module PhatSort.Cmd.PhatSort.HMock (tests) where
+module PhatSort.Cmd.PhatSort.Mock (tests) where
 
 -- https://hackage.haskell.org/package/base
 import Control.Monad ((<=<))
@@ -1624,7 +1624,7 @@ testLargeScript = testCase "LargeScript" . runMockT $ do
 ------------------------------------------------------------------------------
 
 tests :: TestTree
-tests = testGroup "phatsort:HMock"
+tests = testGroup "phatsort:Mock"
     [ testCaseSensitive
     , testCaseSensitiveScript
     , testCaseInsensitive

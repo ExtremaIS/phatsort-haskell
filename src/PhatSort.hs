@@ -2,7 +2,7 @@
 -- |
 -- Module      : PhatSort
 -- Description : metadata
--- Copyright   : Copyright (c) 2019-2021 Travis Cardwell
+-- Copyright   : Copyright (c) 2019-2022 Travis Cardwell
 -- License     : MIT
 ------------------------------------------------------------------------------
 
@@ -21,5 +21,7 @@ import qualified Paths_phatsort as Project
 -- $Constants
 
 -- | PhatSort version string (\"@phatsort-haskell X.X.X.X@\")
+--
+-- @since 0.5.0.0
 version :: String
 version = "phatsort-haskell " ++ showVersion Project.version

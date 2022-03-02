@@ -2,7 +2,7 @@
 -- |
 -- Module      : Main
 -- Description : phatsort CLI
--- Copyright   : Copyright (c) 2019-2021 Travis Cardwell
+-- Copyright   : Copyright (c) 2019-2022 Travis Cardwell
 -- License     : MIT
 ------------------------------------------------------------------------------
 

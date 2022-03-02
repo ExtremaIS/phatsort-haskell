@@ -2,7 +2,7 @@
 -- |
 -- Module      : PhatSort.Script
 -- Description : script API
--- Copyright   : Copyright (c) 2019-2021 Travis Cardwell
+-- Copyright   : Copyright (c) 2019-2022 Travis Cardwell
 -- License     : MIT
 ------------------------------------------------------------------------------
 
@@ -17,6 +17,8 @@ import Data.Char (ord)
 ------------------------------------------------------------------------------
 
 -- | Format a shell command, escaping when necessary
+--
+-- @since 0.5.0.0
 formatCommand
   :: [String]  -- ^ command and arguments
   -> String

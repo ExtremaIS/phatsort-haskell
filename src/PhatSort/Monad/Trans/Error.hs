@@ -2,7 +2,7 @@
 -- |
 -- Module      : PhatSort.Monad.Trans.Error
 -- Description : error monad transformer
--- Copyright   : Copyright (c) 2019-2021 Travis Cardwell
+-- Copyright   : Copyright (c) 2019-2022 Travis Cardwell
 -- License     : MIT
 ------------------------------------------------------------------------------
 
@@ -33,12 +33,16 @@ import qualified Control.Monad.Trans.Class as Trans
 -- $ErrorT
 
 -- | Transformer used to manage errors: 'ExceptT' 'String'
+--
+-- @since 0.5.0.0
 type ErrorT = ExceptT String
 
 ------------------------------------------------------------------------------
 -- $API
 
 -- | Manage 'String' errors of an action
+--
+-- @since 0.5.0.0
 errorT
   :: Monad m
   => m (Either String a)
@@ -49,6 +53,8 @@ errorT = ExceptT
 ------------------------------------------------------------------------------
 
 -- | Manage 'Exception' errors of an action
+--
+-- @since 0.5.0.0
 errorTE
   :: (Exception e, Monad m)
   => m (Either e a)
@@ -59,6 +65,8 @@ errorTE = ExceptT . fmap (first displayException)
 ------------------------------------------------------------------------------
 
 -- | Lift an action without errors
+--
+-- @since 0.5.0.0
 lift
   :: Monad m
   => m a
@@ -69,6 +77,8 @@ lift = Trans.lift
 ------------------------------------------------------------------------------
 
 -- | Manage 'String' errors
+--
+-- @since 0.5.0.0
 liftEither
   :: Monad m
   => Either String a
@@ -79,6 +89,8 @@ liftEither = ExceptT . pure
 ------------------------------------------------------------------------------
 
 -- | Manage 'Exception' errors
+--
+-- @since 0.5.0.0
 liftEitherE
   :: (Exception e, Monad m)
   => Either e a
@@ -89,6 +101,8 @@ liftEitherE = ExceptT . pure . first displayException
 ------------------------------------------------------------------------------
 
 -- | Run the transformer
+--
+-- @since 0.5.0.0
 run
   :: Monad m
   => ErrorT m a
@@ -99,6 +113,8 @@ run = Except.runExceptT
 ------------------------------------------------------------------------------
 
 -- | Throw a 'String' error
+--
+-- @since 0.5.0.0
 throw
   :: Monad m
   => String
@@ -109,6 +125,8 @@ throw = Except.throwE
 ------------------------------------------------------------------------------
 
 -- | Throw an 'Exception' error
+--
+-- @since 0.5.0.0
 throwE
   :: (Exception e, Monad m)
   => e
