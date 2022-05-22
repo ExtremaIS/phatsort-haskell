@@ -26,6 +26,10 @@ following conventions:
 
 ## Unreleased
 
+### Non-Breaking
+
+* Bump `unix-compat` dependency version upper bound
+
 ## 0.5.0.1 (2022-03-02)
 
 ### Non-Breaking

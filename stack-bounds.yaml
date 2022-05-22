@@ -2,3 +2,6 @@ resolver: nightly-2022-05-20
 
 packages:
   - .
+
+extra-deps:
+  - unix-compat-0.6
