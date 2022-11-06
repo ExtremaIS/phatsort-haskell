@@ -29,6 +29,7 @@ following conventions:
 ### Non-Breaking
 
 * Bump `MonadRandom` dependency version upper bound
+* Bump `transformers` dependency version upper bound
 * Bump `unix-compat` dependency version upper bound
 
 ## 0.5.0.1 (2022-03-02)
