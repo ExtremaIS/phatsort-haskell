@@ -2,7 +2,7 @@
 -- |
 -- Module      : PhatSort.Monad.FileSystem
 -- Description : filesystem I/O
--- Copyright   : Copyright (c) 2019-2022 Travis Cardwell
+-- Copyright   : Copyright (c) 2019-2023 Travis Cardwell
 -- License     : MIT
 ------------------------------------------------------------------------------
 
