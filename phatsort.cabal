@@ -63,7 +63,7 @@ library
     , MonadRandom >=0.5 && <0.7
     , random-shuffle >=0.0.4 && <0.1
     , transformers >=0.5 && <0.7
-    , unix-compat >=0.5 && <0.7
+    , unix-compat >=0.5 && <0.8
   default-language: Haskell2010
   default-extensions:
       OverloadedStrings
