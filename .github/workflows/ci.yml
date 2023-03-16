@@ -43,6 +43,8 @@ jobs:
             dist-newstyle
           key: ${{ runner.os }}-${{ env.CURR_MONTH }}-cabal-${{ matrix.ghc }}-${{ hashFiles('cabal.project.freeze') }}
           restore-keys: ${{ runner.os }}-${{ env.CURR_MONTH }}-cabal-${{ matrix.ghc }}-
+      - name: Update 2
+        run: cabal v2-update
       - name: Build
         run: |
           if [ -f "cabal-${{ matrix.ghc }}.project" ] ; then
