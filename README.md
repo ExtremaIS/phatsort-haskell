@@ -94,24 +94,28 @@ $ stack install phatsort
 
 ### Usage
 
-See the [`phatsort`](doc/phatsort.1.md) and [`seqcp`](doc/seqcp.1.md) man
-pages for usage information.
+See the [`phatsort`][] and [`seqcp`][] man pages for usage information.
+
+[`phatsort`]: <doc/phatsort.1.md>
+[`seqcp`]: <doc/seqcp.1.md>
 
 ## Related Software
 
-[`FATSort`](https://fatsort.sourceforge.io/) is a command-line utility that
-sorts unmounted FAT filesystems by direct manipulation of the FAT tables.
-Unfortunately, there are many devices for which this does not work.
+[`FATSort`][] is a command-line utility that sorts unmounted FAT filesystems
+by direct manipulation of the FAT tables.  Unfortunately, there are many
+devices for which this does not work.
 
-[`YAFS`](http://www.luisrios.eti.br/public/en_us/projects/yafs/) is a
-command-line utility that sorts unmounted FAT filesystems by direct
-manipulation of the FAT tables.
-[`Visual YAFS`](http://www.luisrios.eti.br/public/en_us/projects/visual_yafs/)
-provides a GUI.  I have not tried either of these.
+[`YAFS`][] is a command-line utility that sorts unmounted FAT filesystems by
+direct manipulation of the FAT tables.  [`Visual YAFS`][] provides a GUI.  I
+have not tried either of these.
 
-[`DriveSort`](http://www.anerty.net/software/file/DriveSort/) is Windows GUI
-software that sorts unmounted FAT filesystems by direct manipulation of the
-FAT tables.  I have not tried it.
+[`DriveSort`][] is Windows GUI software that sorts unmounted FAT filesystems
+by direct manipulation of the FAT tables.  I have not tried it.
+
+[`FATSort`]: <https://fatsort.sourceforge.io/>
+[`YAFS`]: <http://www.luisrios.eti.br/public/en_us/projects/yafs/>
+[`Visual YAFS`]: <http://www.luisrios.eti.br/public/en_us/projects/visual_yafs/>
+[`DriveSort`]: <http://www.anerty.net/software/file/DriveSort/>
 
 ## Project
 
@@ -125,8 +129,9 @@ FAT tables.  I have not tried it.
 ### Tags
 
 All releases are tagged in the `main` branch.  Release tags are signed using
-the
-[`security@extrema.is` GPG key](http://keys.gnupg.net/pks/lookup?op=vindex&fingerprint=on&search=0x1D484E4B4705FADF).
+the [`security@extrema.is` GPG key][].
+
+[`security@extrema.is` GPG key]: <http://keys.gnupg.net/pks/lookup?op=vindex&fingerprint=on&search=0x1D484E4B4705FADF>
 
 ### Contribution
 
@@ -137,6 +142,8 @@ Issues may also be submitted via email to <bugs@extrema.is>.
 
 ### License
 
-This project is released under the
-[MIT License](https://opensource.org/licenses/MIT) as specified in the
-[`LICENSE`](LICENSE) file.
+This project is released under the [MIT License][] as specified in the
+[`LICENSE`][] file.
+
+[MIT License]: <https://opensource.org/licenses/MIT>
+[`LICENSE`]: <LICENSE>
