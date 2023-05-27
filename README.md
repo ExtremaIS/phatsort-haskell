@@ -123,6 +123,7 @@ by direct manipulation of the FAT tables.  I have not tried it.
 
 * Hackage: <https://hackage.haskell.org/package/phatsort>
 * Stackage: <https://www.stackage.org/package/phatsort>
+* Flora: <https://flora.pm/packages/@hackage/phatsort>
 * GitHub: <https://github.com/ExtremaIS/phatsort-haskell>
 * GitHub Actions CI: <https://github.com/ExtremaIS/phatsort-haskell/actions>
 
