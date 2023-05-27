@@ -31,6 +31,7 @@ following conventions:
 * Bump `MonadRandom` dependency version upper bound
 * Bump `transformers` dependency version upper bound
 * Bump `unix-compat` dependency version upper bound
+* Adjust dependency constraints to match tested versions
 
 ## 0.5.0.1 (2022-03-02)
 
