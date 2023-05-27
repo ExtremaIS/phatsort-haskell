@@ -4,7 +4,7 @@ with-compiler: ghc-9.4.5
 
 constraints:
     -- https://hackage.haskell.org/package/ansi-wl-pprint
-    ansi-wl-pprint == 0.6.9
+    ansi-wl-pprint == 1.0.2
 
     -- https://hackage.haskell.org/package/base
     -- GHC boot library
@@ -28,7 +28,7 @@ constraints:
   , MonadRandom == 0.6
 
     -- https://hackage.haskell.org/package/optparse-applicative
-  , optparse-applicative == 0.17.0.0
+  , optparse-applicative == 0.17.1.0
 
     -- https://hackage.haskell.org/package/random-shuffle
   , random-suffle == 0.0.4

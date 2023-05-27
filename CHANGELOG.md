@@ -28,6 +28,7 @@ following conventions:
 
 ### Non-Breaking
 
+* Bump `ansi-wl-pprint` dependency version upper bound
 * Bump `MonadRandom` dependency version upper bound
 * Bump `transformers` dependency version upper bound
 * Bump `unix-compat` dependency version upper bound
