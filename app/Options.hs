@@ -2,14 +2,19 @@
 -- |
 -- Module      : Options
 -- Description : CLI options and help documentation
--- Copyright   : Copyright (c) 2019-2022 Travis Cardwell
+-- Copyright   : Copyright (c) 2019-2023 Travis Cardwell
 -- License     : MIT
 ------------------------------------------------------------------------------
 
-module Options where
+{-# LANGUAGE CPP #-}
 
--- https://hackage.haskell.org/package/ansi-wl-pprint
-import Text.PrettyPrint.ANSI.Leijen (Doc)
+#if defined(MIN_VERSION_ansi_wl_pprint)
+#if MIN_VERSION_ansi_wl_pprint (1,0,2)
+{-# OPTIONS_GHC -Wno-warnings-deprecations #-}
+#endif
+#endif
+
+module Options where
 
 -- https://hackage.haskell.org/package/base
 import Data.Bool (bool)
@@ -39,7 +44,7 @@ caseOption = fmap (bool CaseSensitive CaseInsensitive) . OA.switch $
 
 ------------------------------------------------------------------------------
 
-exitCodeHelp :: Doc
+exitCodeHelp :: LibOA.Doc
 exitCodeHelp = LibOA.section "Exit codes:" $ LibOA.table_ 2
     [ ["0", "no error"]
     , ["1", "execution error"]
@@ -64,7 +69,7 @@ firstOption = OA.option (OA.eitherReader parseFirst) $ mconcat
 
 ------------------------------------------------------------------------------
 
-firstTypeHelp :: Doc
+firstTypeHelp :: LibOA.Doc
 firstTypeHelp = LibOA.section "TYPE choices:" $ LibOA.table_ 2
     [ ["dirs", "sort directories before files"]
     , ["files", "sort files before directories"]
@@ -98,7 +103,7 @@ orderOption = OA.option (OA.eitherReader parseOrder) $ mconcat
 
 ------------------------------------------------------------------------------
 
-orderHelp :: Doc
+orderHelp :: LibOA.Doc
 orderHelp = LibOA.section "ORDER choices:" $ LibOA.table_ 2
     [ ["name", "sort by filename"]
     , ["time", "sort by modification time"]

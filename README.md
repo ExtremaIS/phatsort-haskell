@@ -94,24 +94,28 @@ $ stack install phatsort
 
 ### Usage
 
-See the [`phatsort`](doc/phatsort.1.md) and [`seqcp`](doc/seqcp.1.md) man
-pages for usage information.
+See the [`phatsort`][] and [`seqcp`][] man pages for usage information.
+
+[`phatsort`]: <doc/phatsort.1.md>
+[`seqcp`]: <doc/seqcp.1.md>
 
 ## Related Software
 
-[`FATSort`](https://fatsort.sourceforge.io/) is a command-line utility that
-sorts unmounted FAT filesystems by direct manipulation of the FAT tables.
-Unfortunately, there are many devices for which this does not work.
+[`FATSort`][] is a command-line utility that sorts unmounted FAT filesystems
+by direct manipulation of the FAT tables.  Unfortunately, there are many
+devices for which this does not work.
 
-[`YAFS`](http://www.luisrios.eti.br/public/en_us/projects/yafs/) is a
-command-line utility that sorts unmounted FAT filesystems by direct
-manipulation of the FAT tables.
-[`Visual YAFS`](http://www.luisrios.eti.br/public/en_us/projects/visual_yafs/)
-provides a GUI.  I have not tried either of these.
+[`YAFS`][] is a command-line utility that sorts unmounted FAT filesystems by
+direct manipulation of the FAT tables.  [`Visual YAFS`][] provides a GUI.  I
+have not tried either of these.
 
-[`DriveSort`](http://www.anerty.net/software/file/DriveSort/) is Windows GUI
-software that sorts unmounted FAT filesystems by direct manipulation of the
-FAT tables.  I have not tried it.
+[`DriveSort`][] is Windows GUI software that sorts unmounted FAT filesystems
+by direct manipulation of the FAT tables.  I have not tried it.
+
+[`FATSort`]: <https://fatsort.sourceforge.io/>
+[`YAFS`]: <http://www.luisrios.eti.br/public/en_us/projects/yafs/>
+[`Visual YAFS`]: <http://www.luisrios.eti.br/public/en_us/projects/visual_yafs/>
+[`DriveSort`]: <http://www.anerty.net/software/file/DriveSort/>
 
 ## Project
 
@@ -119,14 +123,32 @@ FAT tables.  I have not tried it.
 
 * Hackage: <https://hackage.haskell.org/package/phatsort>
 * Stackage: <https://www.stackage.org/package/phatsort>
+* Flora: <https://flora.pm/packages/@hackage/phatsort>
 * GitHub: <https://github.com/ExtremaIS/phatsort-haskell>
 * GitHub Actions CI: <https://github.com/ExtremaIS/phatsort-haskell/actions>
+
+### Branches
+
+The `main` branch is reserved for releases.  It may be considered stable, and
+`HEAD` is always the latest release.
+
+The `develop` branch is the primary development branch.  It contains changes
+that have not yet been released, and it is not necessarily stable.
+
+[Hackage revisions][] are made for metadata changes, such as relaxation of
+constraints when new versions of dependencies are released.  The
+`phatsort.cabal` metadata in the `main` branch may therefore not match that of
+Hackage.  The `phatsort.cabal` metadata in the `develop` branch may match,
+*unless* work is being done on a new release that contains other changes.
+
+[Hackage revisions]: <https://github.com/haskell-infra/hackage-trustees/blob/master/revisions-information.md#hackage-metadata-revisions--what-they-are-how-they-work>
 
 ### Tags
 
 All releases are tagged in the `main` branch.  Release tags are signed using
-the
-[`security@extrema.is` GPG key](http://keys.gnupg.net/pks/lookup?op=vindex&fingerprint=on&search=0x1D484E4B4705FADF).
+the [`security@extrema.is` GPG key][].
+
+[`security@extrema.is` GPG key]: <https://keyserver.ubuntu.com/pks/lookup?search=0x1D484E4B4705FADF&fingerprint=on&op=index>
 
 ### Contribution
 
@@ -137,6 +159,8 @@ Issues may also be submitted via email to <bugs@extrema.is>.
 
 ### License
 
-This project is released under the
-[MIT License](https://opensource.org/licenses/MIT) as specified in the
-[`LICENSE`](LICENSE) file.
+This project is released under the [MIT License][] as specified in the
+[`LICENSE`][] file.
+
+[MIT License]: <https://opensource.org/licenses/MIT>
+[`LICENSE`]: <LICENSE>

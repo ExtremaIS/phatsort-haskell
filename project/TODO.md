@@ -8,4 +8,5 @@
 
 ## Project
 
-* Nix configuration that works with Cabal conditional compilation
+* Support for GHC 9.6 requires updating `HMock` for compatibility with current
+  `mtl` and `transformers` versions.
