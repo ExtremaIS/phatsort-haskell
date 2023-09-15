@@ -16,7 +16,7 @@ constraints:
 
     -- https://hackage.haskell.org/package/filepath
     -- GHC boot library
-  , filepath == 1.4.100.1
+  , filepath == 1.4.100.4
 
     -- https://hackage.haskell.org/package/HMock
   , HMock == 0.5.1.0
@@ -41,7 +41,7 @@ constraints:
 
     -- https://hackage.haskell.org/package/transformers
     -- GHC boot library
-  , transformers == 0.6.1.0
+  , transformers == 0.6.1.1
 
     -- https://hackage.haskell.org/package/unix-compat
   , unix-compat == 0.7
