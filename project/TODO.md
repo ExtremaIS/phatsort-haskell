@@ -7,8 +7,8 @@
 ## Compatibility
 
 * [`filepath`](https://hackage.haskell.org/package/filepath)
-  `1.5.0.0` blocked by
-  [`directory`](https://hackage.haskell.org/package/directory)
+  `1.5.2.0` blocked by
+  [`hashable`](https://hackage.haskell.org/package/hashable)
 
 ## Documentation
 
