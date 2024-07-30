@@ -1,6 +1,6 @@
 packages: ./phatsort.cabal
 
-with-compiler: ghc-8.6.5
+with-compiler: ghc-8.8.4
 
 constraints:
     -- https://hackage.haskell.org/package/ansi-wl-pprint
@@ -8,21 +8,21 @@ constraints:
 
     -- https://hackage.haskell.org/package/base
     -- GHC boot library
-  , base == 4.12.0.0
+  , base == 4.13.0.0
 
     -- https://hackage.haskell.org/package/directory
     -- GHC boot library
-  , directory == 1.3.3.0
+  , directory == 1.3.6.0
 
     -- https://hackage.haskell.org/package/filepath
     -- GHC boot library
   , filepath == 1.4.2.1
 
   -- https://hackage.haskell.org/package/MonadRandom
-  , MonadRandom == 0.5.1.2
+  , MonadRandom == 0.5.2
 
     -- https://hackage.haskell.org/package/optparse-applicative
-  , optparse-applicative == 0.14.3.0
+  , optparse-applicative == 0.15.1.0
 
     -- https://hackage.haskell.org/package/random-shuffle
   , random-suffle == 0.0.4
@@ -31,7 +31,7 @@ constraints:
   , tasty == 1.2.3
 
     -- https://hackage.haskell.org/package/tasty-hunit
-  , tasty-hunit == 0.10.0.2
+  , tasty-hunit == 0.10.0.3
 
     -- https://hackage.haskell.org/package/transformers
     -- GHC boot library
