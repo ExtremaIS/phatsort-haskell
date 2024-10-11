@@ -44,4 +44,4 @@ constraints:
   , transformers == 0.6.1.2
 
     -- https://hackage.haskell.org/package/unix-compat
-  , unix-compat == 0.7.1
+  , unix-compat == 0.7.3
