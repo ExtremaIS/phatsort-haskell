@@ -27,7 +27,7 @@ tested-with:
    || ==9.2.8
    || ==9.4.8
    || ==9.6.7
-   || ==9.8.2
+   || ==9.8.4
 
 source-repository head
   type: git
