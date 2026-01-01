@@ -2,7 +2,7 @@
 -- |
 -- Module      : PhatSort
 -- Description : metadata
--- Copyright   : Copyright (c) 2019-2024 Travis Cardwell
+-- Copyright   : Copyright (c) 2019-2026 Travis Cardwell
 -- License     : MIT
 ------------------------------------------------------------------------------
 
